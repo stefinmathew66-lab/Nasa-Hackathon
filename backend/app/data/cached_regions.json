@@ -1,0 +1,127 @@
+{
+  "maharashtra_in": {
+    "name": "Maharashtra (Jalna / Marathwada), India",
+    "lat": 19.84,
+    "lon": 75.88,
+    "annual_rainfall_mm": 680.5,
+    "monsoon_rainfall_mm": 540.2,
+    "dry_season_rainfall_mm": 140.3,
+    "heat_days_above_35c": 48,
+    "avg_temperature_c": 27.4,
+    "root_zone_soil_wetness": 0.38,
+    "rainfall_5yr_trend_pct": -8.5,
+    "soil": {
+      "texture": "clay",
+      "clay_pct": 52.0,
+      "sand_pct": 18.0,
+      "ph": 7.8,
+      "organic_carbon_g_kg": 6.2,
+      "classification": "Vertisol (Black Cotton Soil)"
+    },
+    "risk_profile": {
+      "drought_vulnerability": "high",
+      "heat_stress_risk": "medium",
+      "water_table_status": "depleted"
+    }
+  },
+  "machakos_ke": {
+    "name": "Machakos County, Kenya",
+    "lat": -1.51,
+    "lon": 37.26,
+    "annual_rainfall_mm": 520.0,
+    "monsoon_rainfall_mm": 380.0,
+    "dry_season_rainfall_mm": 140.0,
+    "heat_days_above_35c": 22,
+    "avg_temperature_c": 22.8,
+    "root_zone_soil_wetness": 0.31,
+    "rainfall_5yr_trend_pct": -12.4,
+    "soil": {
+      "texture": "sandy_loam",
+      "clay_pct": 21.0,
+      "sand_pct": 65.0,
+      "ph": 6.2,
+      "organic_carbon_g_kg": 8.1,
+      "classification": "Alfisol / Luvisol"
+    },
+    "risk_profile": {
+      "drought_vulnerability": "severe",
+      "heat_stress_risk": "medium",
+      "water_table_status": "scarce"
+    }
+  },
+  "central_valley_us": {
+    "name": "Fresno, Central Valley, California, USA",
+    "lat": 36.74,
+    "lon": -119.78,
+    "annual_rainfall_mm": 290.0,
+    "monsoon_rainfall_mm": 40.0,
+    "dry_season_rainfall_mm": 250.0,
+    "heat_days_above_35c": 64,
+    "avg_temperature_c": 18.9,
+    "root_zone_soil_wetness": 0.28,
+    "rainfall_5yr_trend_pct": -14.2,
+    "soil": {
+      "texture": "loam",
+      "clay_pct": 28.0,
+      "sand_pct": 42.0,
+      "ph": 7.4,
+      "organic_carbon_g_kg": 11.5,
+      "classification": "Aridisol / Entisol"
+    },
+    "risk_profile": {
+      "drought_vulnerability": "severe",
+      "heat_stress_risk": "high",
+      "water_table_status": "critically_overdrafted"
+    }
+  },
+  "sahel_ne": {
+    "name": "Tillabéri, Niger (Sahel)",
+    "lat": 14.21,
+    "lon": 1.45,
+    "annual_rainfall_mm": 390.0,
+    "monsoon_rainfall_mm": 340.0,
+    "dry_season_rainfall_mm": 50.0,
+    "heat_days_above_35c": 115,
+    "avg_temperature_c": 30.2,
+    "root_zone_soil_wetness": 0.19,
+    "rainfall_5yr_trend_pct": -9.8,
+    "soil": {
+      "texture": "sandy",
+      "clay_pct": 8.0,
+      "sand_pct": 86.0,
+      "ph": 5.8,
+      "organic_carbon_g_kg": 2.4,
+      "classification": "Arenosol"
+    },
+    "risk_profile": {
+      "drought_vulnerability": "extreme",
+      "heat_stress_risk": "severe",
+      "water_table_status": "famine_prone"
+    }
+  },
+  "iowa_us": {
+    "name": "Story County (Ames), Iowa, USA",
+    "lat": 42.03,
+    "lon": -93.63,
+    "annual_rainfall_mm": 910.0,
+    "monsoon_rainfall_mm": 620.0,
+    "dry_season_rainfall_mm": 290.0,
+    "heat_days_above_35c": 12,
+    "avg_temperature_c": 10.5,
+    "root_zone_soil_wetness": 0.72,
+    "rainfall_5yr_trend_pct": 3.1,
+    "soil": {
+      "texture": "loam",
+      "clay_pct": 26.0,
+      "sand_pct": 34.0,
+      "ph": 6.8,
+      "organic_carbon_g_kg": 28.0,
+      "classification": "Mollisol (Prairie Soil)"
+    },
+    "risk_profile": {
+      "drought_vulnerability": "low",
+      "heat_stress_risk": "low",
+      "water_table_status": "adequate"
+    }
+  }
+}
