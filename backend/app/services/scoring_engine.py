@@ -332,3 +332,4 @@ class ScoringEngine:
         wa += "\n_Powered by NASA Earth Observations & FAO Agronomy Models_"
 
         return sms, wa
+

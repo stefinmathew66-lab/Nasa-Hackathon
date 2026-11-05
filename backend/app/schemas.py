@@ -93,3 +93,4 @@ class RecommendationResponse(BaseModel):
     sms_format: str
     whatsapp_format: str
     generation_time_ms: float
+

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Sliders, Droplet, Sprout, TrendingUp, ShieldAlert } from 'lucide-react';
+import { Sliders, Shield, Sprout, DollarSign, AlertTriangle } from 'lucide-react';
 import { FarmerPriorities } from '../types';
 import { Translations } from '../locales/translations';
 
@@ -14,15 +14,13 @@ export const PrioritySliders: React.FC<PrioritySlidersProps> = ({
   onChange,
   t
 }) => {
-  const setPreset = (preset: 'water' | 'soil' | 'income' | 'balanced') => {
+  const setPreset = (preset: 'water' | 'soil' | 'income') => {
     if (preset === 'water') {
-      onChange({ save_water: 2.8, improve_soil: 1.2, maximize_income: 1.0, reduce_risk: 2.0 });
+      onChange({ save_water: 2.8, improve_soil: 1.2, maximize_income: 1.0, reduce_risk: 2.5 });
     } else if (preset === 'soil') {
       onChange({ save_water: 1.5, improve_soil: 3.0, maximize_income: 1.0, reduce_risk: 1.5 });
-    } else if (preset === 'income') {
-      onChange({ save_water: 1.0, improve_soil: 1.2, maximize_income: 3.0, reduce_risk: 1.0 });
     } else {
-      onChange({ save_water: 1.0, improve_soil: 1.0, maximize_income: 1.0, reduce_risk: 1.0 });
+      onChange({ save_water: 1.0, improve_soil: 1.2, maximize_income: 3.0, reduce_risk: 1.0 });
     }
   };
 
@@ -33,59 +31,73 @@ export const PrioritySliders: React.FC<PrioritySlidersProps> = ({
     });
   };
 
-  return (
-    <div className="bg-white rounded-2xl p-5 shadow-sm border border-slate-200">
-      <div className="pb-3 border-b border-slate-100 mb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-        <div>
-          <h2 className="text-base font-bold text-slate-900 flex items-center space-x-2">
-            <Sliders className="w-5 h-5 text-emerald-600" />
-            <span>{t.step3}</span>
-          </h2>
-          <p className="text-xs text-slate-500">{t.step3Desc}</p>
-        </div>
+  // Convert 0.5 - 3.0 weight to percentage (50% to 100%)
+  const toPct = (val: number) => Math.round((val / 3.0) * 100);
 
-        {/* Quick Presets */}
-        <div className="flex flex-wrap gap-1">
-          <button
-            type="button"
-            onClick={() => setPreset('water')}
-            className="text-[11px] font-semibold px-2 py-1 rounded-md bg-blue-50 text-blue-700 hover:bg-blue-100 border border-blue-200"
-          >
-            💧 Drought Shield
-          </button>
-          <button
-            type="button"
-            onClick={() => setPreset('soil')}
-            className="text-[11px] font-semibold px-2 py-1 rounded-md bg-green-50 text-green-700 hover:bg-green-100 border border-green-200"
-          >
-            🌱 Soil Rebuild
-          </button>
-          <button
-            type="button"
-            onClick={() => setPreset('income')}
-            className="text-[11px] font-semibold px-2 py-1 rounded-md bg-amber-50 text-amber-700 hover:bg-amber-100 border border-amber-200"
-          >
-            💰 Cash Focus
-          </button>
-          <button
-            type="button"
-            onClick={() => setPreset('balanced')}
-            className="text-[11px] font-semibold px-2 py-1 rounded-md bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-200"
-          >
-            ⚖️ Balanced
-          </button>
+  return (
+    <div className="bg-surface-container-lowest rounded-lg border border-outline-variant p-4 space-y-4 shadow-sm">
+      {/* Header */}
+      <div className="flex items-center justify-between border-b border-outline-variant pb-2.5">
+        <div className="flex items-center gap-2">
+          <Sliders className="w-5 h-5 text-primary" />
+          <h3 className="font-headline font-bold text-base text-primary">
+            Strategic Agronomic Priorities
+          </h3>
         </div>
+        <span className="text-[10px] font-mono text-on-surface-variant uppercase">
+          Multi-Objective Engine
+        </span>
       </div>
 
-      <div className="space-y-3.5">
-        {/* Save Water */}
-        <div className="bg-blue-50/40 p-3 rounded-xl border border-blue-100">
-          <div className="flex items-center justify-between text-xs font-bold text-slate-800 mb-1.5">
-            <span className="flex items-center space-x-1.5 text-blue-900">
-              <Droplet className="w-4 h-4 text-blue-600" />
-              <span>{t.saveWater}</span>
-            </span>
-            <span className="font-mono text-blue-700 font-extrabold">{priorities.save_water.toFixed(1)}x</span>
+      {/* Preset Chips */}
+      <div className="flex flex-wrap gap-1.5">
+        <button
+          type="button"
+          onClick={() => setPreset('water')}
+          className={`px-3 py-1 rounded-full text-xs font-mono font-semibold flex items-center gap-1 transition ${
+            priorities.save_water >= 2.5
+              ? 'bg-primary text-white shadow-sm'
+              : 'bg-surface-container text-on-surface hover:bg-surface-container-high'
+          }`}
+        >
+          <Shield className="w-3.5 h-3.5 text-secondary-fixed" />
+          <span>Drought Shield</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => setPreset('soil')}
+          className={`px-3 py-1 rounded-full text-xs font-mono font-semibold flex items-center gap-1 transition ${
+            priorities.improve_soil >= 2.5
+              ? 'bg-secondary text-white shadow-sm'
+              : 'bg-surface-container text-on-surface hover:bg-surface-container-high'
+          }`}
+        >
+          <Sprout className="w-3.5 h-3.5 text-secondary-fixed" />
+          <span>Soil Rebuild</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => setPreset('income')}
+          className={`px-3 py-1 rounded-full text-xs font-mono font-semibold flex items-center gap-1 transition ${
+            priorities.maximize_income >= 2.5
+              ? 'bg-primary-container text-white shadow-sm'
+              : 'bg-surface-container text-on-surface hover:bg-surface-container-high'
+          }`}
+        >
+          <DollarSign className="w-3.5 h-3.5 text-amber-300" />
+          <span>Cash Maximizer</span>
+        </button>
+      </div>
+
+      {/* Custom Calibrated Sliders */}
+      <div className="space-y-3 pt-1">
+        {/* Save Irrigation Water */}
+        <div>
+          <div className="flex justify-between text-xs font-sans mb-1">
+            <span className="font-medium text-on-surface">Save Irrigation Water</span>
+            <span className="font-mono text-primary font-bold">{toPct(priorities.save_water)}%</span>
           </div>
           <input
             type="range"
@@ -94,18 +106,15 @@ export const PrioritySliders: React.FC<PrioritySlidersProps> = ({
             step="0.1"
             value={priorities.save_water}
             onChange={(e) => update('save_water', parseFloat(e.target.value))}
-            className="w-full accent-blue-600 cursor-pointer"
+            className="w-full accent-primary"
           />
         </div>
 
-        {/* Improve Soil */}
-        <div className="bg-emerald-50/40 p-3 rounded-xl border border-emerald-100">
-          <div className="flex items-center justify-between text-xs font-bold text-slate-800 mb-1.5">
-            <span className="flex items-center space-x-1.5 text-emerald-900">
-              <Sprout className="w-4 h-4 text-emerald-600" />
-              <span>{t.improveSoil}</span>
-            </span>
-            <span className="font-mono text-emerald-700 font-extrabold">{priorities.improve_soil.toFixed(1)}x</span>
+        {/* Rebuild Soil Organic Matter */}
+        <div>
+          <div className="flex justify-between text-xs font-sans mb-1">
+            <span className="font-medium text-on-surface">Rebuild Soil Organic Matter (SOM)</span>
+            <span className="font-mono text-secondary font-bold">{toPct(priorities.improve_soil)}%</span>
           </div>
           <input
             type="range"
@@ -114,18 +123,15 @@ export const PrioritySliders: React.FC<PrioritySlidersProps> = ({
             step="0.1"
             value={priorities.improve_soil}
             onChange={(e) => update('improve_soil', parseFloat(e.target.value))}
-            className="w-full accent-emerald-600 cursor-pointer"
+            className="w-full accent-secondary"
           />
         </div>
 
-        {/* Maximize Income */}
-        <div className="bg-amber-50/40 p-3 rounded-xl border border-amber-100">
-          <div className="flex items-center justify-between text-xs font-bold text-slate-800 mb-1.5">
-            <span className="flex items-center space-x-1.5 text-amber-900">
-              <TrendingUp className="w-4 h-4 text-amber-600" />
-              <span>{t.maximizeIncome}</span>
-            </span>
-            <span className="font-mono text-amber-700 font-extrabold">{priorities.maximize_income.toFixed(1)}x</span>
+        {/* Maximize Smallholder Net Cash Flow */}
+        <div>
+          <div className="flex justify-between text-xs font-sans mb-1">
+            <span className="font-medium text-on-surface">Maximize Smallholder Net Cash Flow</span>
+            <span className="font-mono text-primary font-bold">{toPct(priorities.maximize_income)}%</span>
           </div>
           <input
             type="range"
@@ -134,18 +140,15 @@ export const PrioritySliders: React.FC<PrioritySlidersProps> = ({
             step="0.1"
             value={priorities.maximize_income}
             onChange={(e) => update('maximize_income', parseFloat(e.target.value))}
-            className="w-full accent-amber-600 cursor-pointer"
+            className="w-full accent-primary"
           />
         </div>
 
-        {/* Reduce Risk */}
-        <div className="bg-purple-50/40 p-3 rounded-xl border border-purple-100">
-          <div className="flex items-center justify-between text-xs font-bold text-slate-800 mb-1.5">
-            <span className="flex items-center space-x-1.5 text-purple-900">
-              <ShieldAlert className="w-4 h-4 text-purple-600" />
-              <span>{t.reduceRisk}</span>
-            </span>
-            <span className="font-mono text-purple-700 font-extrabold">{priorities.reduce_risk.toFixed(1)}x</span>
+        {/* Reduce Climate Exposure */}
+        <div>
+          <div className="flex justify-between text-xs font-sans mb-1">
+            <span className="font-medium text-on-surface">Reduce Climate Exposure / Risk</span>
+            <span className="font-mono text-error font-bold">{toPct(priorities.reduce_risk)}%</span>
           </div>
           <input
             type="range"
@@ -154,7 +157,7 @@ export const PrioritySliders: React.FC<PrioritySlidersProps> = ({
             step="0.1"
             value={priorities.reduce_risk}
             onChange={(e) => update('reduce_risk', parseFloat(e.target.value))}
-            className="w-full accent-purple-600 cursor-pointer"
+            className="w-full accent-error"
           />
         </div>
       </div>

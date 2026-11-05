@@ -186,3 +186,4 @@ export const translations: Record<string, Translations> = {
     resetLocation: "Restablecer"
   }
 };
+

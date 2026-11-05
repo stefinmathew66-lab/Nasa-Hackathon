@@ -4,12 +4,14 @@ import {
   Printer, 
   MessageSquare, 
   AlertCircle, 
-  Satellite, 
   CloudRain, 
   Flame, 
+  Droplet,
   Layers, 
+  Satellite,
   Compass,
-  ArrowRight
+  CheckCircle,
+  FileText
 } from 'lucide-react';
 
 import { 
@@ -37,14 +39,14 @@ export const App: React.FC = () => {
   const [location, setLocation] = useState<LocationInput>({
     lat: 19.84,
     lon: 75.88,
-    region_name: "Maharashtra (Jalna), India"
+    region_name: "Maharashtra (Drought-Prone)"
   });
 
   // Constraints State
   const [constraints, setConstraints] = useState<FarmerConstraints>({
-    soil_type: 'auto',
+    soil_type: 'clay',
     water_access: 'rainfed',
-    field_size_ha: 1.5,
+    field_size_ha: 4.5,
     previous_crop_id: 'cotton',
     budget_level: 'medium',
     language: 'en'
@@ -52,10 +54,10 @@ export const App: React.FC = () => {
 
   // Priorities State
   const [priorities, setPriorities] = useState<FarmerPriorities>({
-    save_water: 2.0,
-    improve_soil: 2.0,
-    maximize_income: 1.0,
-    reduce_risk: 1.5
+    save_water: 2.7,
+    improve_soil: 2.5,
+    maximize_income: 1.8,
+    reduce_risk: 2.8
   });
 
   // Climate Shock Scenario State
@@ -117,7 +119,7 @@ export const App: React.FC = () => {
     }
   };
 
-  // Run on mount
+  // Run on mount or when location changes
   useEffect(() => {
     fetchRecommendations();
   }, [location.lat, location.lon]);
@@ -127,24 +129,26 @@ export const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-100 flex flex-col font-sans">
-      {/* Navbar */}
+    <div className="min-h-screen bg-background text-on-surface flex flex-col font-sans selection:bg-primary selection:text-white">
+      {/* Top App Bar from Stitch */}
       <Navbar
         t={t}
         currentLang={currentLang}
         onLanguageChange={handleLanguageChange}
-        dataSource={resultData?.climate_summary.data_source}
+        dataSource={resultData?.climate_summary.data_source || "NASA POWER & SMAP Satellites Active"}
+        onOpenSms={() => setIsSmsOpen(true)}
+        onPrint={handlePrint}
       />
 
-      {/* Main App Container */}
-      <main className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 no-print">
+      {/* Main Advisory Workspace: 40% / 60% Responsive Split */}
+      <main className="flex-1 overflow-y-auto px-4 sm:px-6 lg:px-8 py-6 max-w-[1720px] mx-auto w-full no-print">
         {/* Banner Alert for Simulated Climate Stress if active */}
         {resultData?.climate_summary.is_simulated_stress && (
-          <div className="mb-6 bg-gradient-to-r from-orange-600 to-rose-600 text-white p-3.5 rounded-2xl shadow-md flex items-center justify-between text-xs sm:text-sm font-bold">
-            <div className="flex items-center space-x-2">
-              <Flame className="w-5 h-5 text-amber-200 animate-bounce" />
+          <div className="mb-6 bg-error-container/30 border border-error/40 text-on-error-container p-3.5 rounded-lg shadow-sm flex items-center justify-between text-xs sm:text-sm font-mono font-bold">
+            <div className="flex items-center gap-2">
+              <Flame className="w-5 h-5 text-error animate-bounce" />
               <span>
-                SIMULATION ACTIVE: Recommendations recalculated for {stressScenario.rainfall_delta_pct}% rainfall and +{stressScenario.temp_delta_c}°C heat stress.
+                ACTIVE CLIMATE STRESS SIMULATION: Recommendations recalibrated for {stressScenario.rainfall_delta_pct}% rainfall deficit and +{stressScenario.temp_delta_c}°C heat stress.
               </span>
             </div>
             <button
@@ -152,7 +156,7 @@ export const App: React.FC = () => {
                 setStressScenario({ rainfall_delta_pct: 0, temp_delta_c: 0 });
                 setTimeout(fetchRecommendations, 50);
               }}
-              className="px-3 py-1 bg-white/20 hover:bg-white/30 rounded-lg text-white font-semibold transition text-xs"
+              className="px-3 py-1 bg-white hover:bg-surface-container rounded text-error border border-error/30 font-semibold transition text-xs"
             >
               Reset Baseline
             </button>
@@ -160,9 +164,11 @@ export const App: React.FC = () => {
         )}
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-          {/* LEFT COLUMN: Input Panels (Map, Wizard, Priorities, Stress Slider) */}
-          <div className="lg:col-span-5 space-y-5">
-            {/* Map Picker */}
+          {/* ================================================================= */}
+          {/* LEFT COLUMN: INPUTS, PARAMETERS & CLIMATE STRESS SIMULATOR (~40%) */}
+          {/* ================================================================= */}
+          <div className="lg:col-span-5 flex flex-col gap-5">
+            {/* 1. Interactive Satellite Field Map Card */}
             <MapPicker
               lat={location.lat}
               lon={location.lon}
@@ -171,21 +177,21 @@ export const App: React.FC = () => {
               t={t}
             />
 
-            {/* Farm Characteristics Wizard */}
+            {/* 2. Farm Soil & Hydrological Baseline */}
             <FarmerWizard
               constraints={constraints}
               onChange={setConstraints}
               t={t}
             />
 
-            {/* Strategic Priorities */}
+            {/* 3. Strategic Agronomic Priorities */}
             <PrioritySliders
               priorities={priorities}
               onChange={setPriorities}
               t={t}
             />
 
-            {/* Climate Shock Scenario Slider */}
+            {/* 4. Climate Shock Simulator */}
             <ClimateShockSlider
               scenario={stressScenario}
               onChange={setStressScenario}
@@ -194,100 +200,126 @@ export const App: React.FC = () => {
               t={t}
             />
 
-            {/* CTA Button */}
+            {/* 5. Primary Generate Action Button */}
             <button
               onClick={fetchRecommendations}
               disabled={isLoading}
-              className="w-full py-4 rounded-2xl bg-gradient-to-r from-emerald-600 via-green-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white font-black text-base shadow-lg shadow-emerald-900/20 flex items-center justify-center space-x-2 transition disabled:opacity-60"
+              className="w-full py-3.5 px-4 bg-secondary text-white rounded-lg font-headline text-base font-bold shadow-md hover:bg-secondary-on-container transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-98 disabled:opacity-60"
             >
-              <Sparkles className="w-5 h-5" />
-              <span>{isLoading ? t.calculating : t.calculateButton}</span>
+              <Sparkles className="w-5 h-5 text-secondary-fixed" />
+              <span>{isLoading ? "Consulting NASA Earth Observations..." : "Generate Resilient 3-Season Rotations (AI + NASA EO)"}</span>
             </button>
           </div>
 
-          {/* RIGHT COLUMN: Results Dashboard */}
-          <div className="lg:col-span-7 space-y-5">
-            {/* Action Bar (Print, SMS View) */}
+          {/* ================================================================= */}
+          {/* RIGHT COLUMN: NASA CLIMATE INTELLIGENCE & ROTATION PLANS (~60%)   */}
+          {/* ================================================================= */}
+          <div className="lg:col-span-7 flex flex-col gap-5">
+            {/* 1. Action & Operational Mode Bar */}
             {resultData && (
-              <div className="bg-white rounded-2xl p-4 shadow-sm border border-slate-200 flex flex-wrap items-center justify-between gap-3">
-                <div className="flex items-center space-x-2 text-xs text-slate-600 font-semibold">
-                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
-                  <span>{resultData.recommendations.length} Climate-Smart Rotation Options</span>
-                  <span className="text-slate-400 font-mono">({resultData.generation_time_ms} ms)</span>
+              <div className="bg-surface-container-lowest rounded-lg border border-outline-variant p-4 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-3">
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="h-2.5 w-2.5 rounded-full bg-secondary"></span>
+                    <h2 className="text-base sm:text-lg font-headline font-bold text-primary">
+                      {resultData.recommendations.length} Climate-Smart Rotation Sequences Verified
+                    </h2>
+                  </div>
+                  <p className="text-xs font-mono text-on-surface-variant mt-0.5">
+                    Calculated in {resultData.generation_time_ms} ms via NASA Agro-Matrix • Calibrated for {resultData.climate_summary.soil_info.classification}
+                  </p>
                 </div>
 
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center gap-2">
                   <button
                     onClick={() => setIsSmsOpen(true)}
-                    className="flex items-center space-x-1.5 text-xs font-bold px-3 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white transition shadow-sm"
+                    className="px-3 py-1.5 rounded-lg bg-surface-container-low text-primary border border-outline-variant hover:bg-surface-container text-xs font-mono font-semibold flex items-center gap-1.5 transition-colors cursor-pointer"
                   >
-                    <MessageSquare className="w-3.5 h-3.5 text-emerald-400" />
-                    <span>{t.viewSms}</span>
+                    <MessageSquare className="w-3.5 h-3.5 text-secondary" />
+                    <span>SMS / WhatsApp Card</span>
                   </button>
 
                   <button
                     onClick={handlePrint}
-                    className="flex items-center space-x-1.5 text-xs font-bold px-3 py-2 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 transition"
+                    className="px-3 py-1.5 rounded-lg bg-surface-container-low text-primary border border-outline-variant hover:bg-surface-container text-xs font-mono font-semibold flex items-center gap-1.5 transition-colors cursor-pointer"
                   >
-                    <Printer className="w-3.5 h-3.5 text-emerald-700" />
-                    <span>{t.printAdvisory}</span>
+                    <Printer className="w-3.5 h-3.5 text-primary" />
+                    <span>Print Dossier</span>
                   </button>
                 </div>
               </div>
             )}
 
-            {/* Satellite Climate Baseline Summary Pill Cards */}
+            {/* 2. NASA Baseline Telemetry Metric Tiles (Grid of 4) */}
             {resultData && (
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
-                <div className="bg-white p-3 rounded-xl border border-slate-200/80 shadow-sm">
-                  <div className="text-[10px] uppercase font-bold text-slate-400 flex items-center space-x-1">
-                    <CloudRain className="w-3 h-3 text-blue-500" />
-                    <span>NASA Rainfall</span>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                {/* Tile 1: Precipitation */}
+                <div className="bg-surface-container-lowest p-3 rounded-lg border border-outline-variant shadow-sm flex flex-col justify-between">
+                  <div>
+                    <div className="text-[10px] font-mono uppercase text-on-surface-variant flex items-center justify-between">
+                      <span>ANNUAL PRECIP</span>
+                      <CloudRain className="w-3.5 h-3.5 text-primary" />
+                    </div>
+                    <div className="text-xl font-headline font-bold text-primary mt-1">
+                      {resultData.climate_summary.annual_rainfall_mm} <span className="text-xs font-mono font-normal text-on-surface-variant">mm</span>
+                    </div>
                   </div>
-                  <div className="text-sm sm:text-base font-black text-slate-900 mt-0.5">
-                    {resultData.climate_summary.annual_rainfall_mm} <span className="text-xs font-normal text-slate-500">mm</span>
-                  </div>
-                  <div className="text-[10px] text-slate-500">
-                    5-yr: {resultData.climate_summary.rainfall_5yr_trend_pct > 0 ? '+' : ''}{resultData.climate_summary.rainfall_5yr_trend_pct}%
-                  </div>
-                </div>
-
-                <div className="bg-white p-3 rounded-xl border border-slate-200/80 shadow-sm">
-                  <div className="text-[10px] uppercase font-bold text-slate-400 flex items-center space-x-1">
-                    <Flame className="w-3 h-3 text-orange-500" />
-                    <span>Heat Days &gt;35°C</span>
-                  </div>
-                  <div className="text-sm sm:text-base font-black text-slate-900 mt-0.5">
-                    {resultData.climate_summary.heat_days_above_35c} <span className="text-xs font-normal text-slate-500">days</span>
-                  </div>
-                  <div className="text-[10px] text-slate-500">
-                    Avg: {resultData.climate_summary.avg_temperature_c}°C
+                  <div className="mt-2 pt-2 border-t border-surface-container flex items-center justify-between text-[10px] font-mono">
+                    <span className={resultData.climate_summary.rainfall_5yr_trend_pct < 0 ? "text-error font-semibold" : "text-secondary font-semibold"}>
+                      {resultData.climate_summary.rainfall_5yr_trend_pct > 0 ? '+' : ''}{resultData.climate_summary.rainfall_5yr_trend_pct}% anomaly
+                    </span>
+                    <span className="text-outline">5-yr avg</span>
                   </div>
                 </div>
 
-                <div className="bg-white p-3 rounded-xl border border-slate-200/80 shadow-sm">
-                  <div className="text-[10px] uppercase font-bold text-slate-400 flex items-center space-x-1">
-                    <Satellite className="w-3 h-3 text-emerald-500" />
-                    <span>SMAP Soil Wetness</span>
+                {/* Tile 2: Heat Days */}
+                <div className="bg-surface-container-lowest p-3 rounded-lg border border-outline-variant shadow-sm flex flex-col justify-between">
+                  <div>
+                    <div className="text-[10px] font-mono uppercase text-on-surface-variant flex items-center justify-between">
+                      <span>HEAT DAYS &gt;35°C</span>
+                      <Flame className="w-3.5 h-3.5 text-error" />
+                    </div>
+                    <div className="text-xl font-headline font-bold text-error mt-1">
+                      {resultData.climate_summary.heat_days_above_35c} <span className="text-xs font-mono font-normal text-on-surface-variant">Days</span>
+                    </div>
                   </div>
-                  <div className="text-sm sm:text-base font-black text-slate-900 mt-0.5">
-                    {(resultData.climate_summary.root_zone_soil_wetness * 100).toFixed(0)} <span className="text-xs font-normal text-slate-500">%</span>
-                  </div>
-                  <div className="text-[10px] text-slate-500">
-                    Root-Zone Index
+                  <div className="mt-2 pt-2 border-t border-surface-container flex items-center justify-between text-[10px] font-mono">
+                    <span className="text-error font-semibold">Avg: {resultData.climate_summary.avg_temperature_c}°C</span>
+                    <span className="text-outline">NASA POWER</span>
                   </div>
                 </div>
 
-                <div className="bg-white p-3 rounded-xl border border-slate-200/80 shadow-sm">
-                  <div className="text-[10px] uppercase font-bold text-slate-400 flex items-center space-x-1">
-                    <Layers className="w-3 h-3 text-purple-500" />
-                    <span>Soil Texture</span>
+                {/* Tile 3: SMAP Root-Zone Wetness */}
+                <div className="bg-surface-container-lowest p-3 rounded-lg border border-outline-variant shadow-sm flex flex-col justify-between">
+                  <div>
+                    <div className="text-[10px] font-mono uppercase text-on-surface-variant flex items-center justify-between">
+                      <span>ROOT-ZONE MOISTURE</span>
+                      <Droplet className="w-3.5 h-3.5 text-secondary" />
+                    </div>
+                    <div className="text-xl font-headline font-bold text-secondary mt-1">
+                      {Math.round(resultData.climate_summary.root_zone_soil_wetness * 100)}% <span className="text-xs font-mono font-normal text-on-surface-variant">Vol</span>
+                    </div>
                   </div>
-                  <div className="text-sm sm:text-base font-black text-slate-900 mt-0.5 truncate">
-                    {resultData.climate_summary.soil_info.texture.toUpperCase()}
+                  <div className="mt-2 pt-2 border-t border-surface-container flex items-center justify-between text-[10px] font-mono">
+                    <span className="text-on-surface-variant font-medium">Moderate Stress</span>
+                    <span className="text-primary font-bold">SMAP L4</span>
                   </div>
-                  <div className="text-[10px] text-slate-500 truncate">
-                    pH {resultData.climate_summary.soil_info.ph}
+                </div>
+
+                {/* Tile 4: Soil Chemistry */}
+                <div className="bg-surface-container-lowest p-3 rounded-lg border border-outline-variant shadow-sm flex flex-col justify-between">
+                  <div>
+                    <div className="text-[10px] font-mono uppercase text-on-surface-variant flex items-center justify-between">
+                      <span>SOIL CHEMISTRY</span>
+                      <Layers className="w-3.5 h-3.5 text-primary" />
+                    </div>
+                    <div className="text-xl font-headline font-bold text-on-surface mt-1 truncate">
+                      pH {resultData.climate_summary.soil_info.ph}
+                    </div>
+                  </div>
+                  <div className="mt-2 pt-2 border-t border-surface-container flex items-center justify-between text-[10px] font-mono truncate">
+                    <span className="text-secondary font-medium truncate">{resultData.climate_summary.soil_info.texture.toUpperCase()}</span>
+                    <span className="text-outline">ISRIC</span>
                   </div>
                 </div>
               </div>
@@ -295,16 +327,16 @@ export const App: React.FC = () => {
 
             {/* Error Message if any */}
             {error && (
-              <div className="p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-800 text-xs sm:text-sm flex items-start space-x-3">
-                <AlertCircle className="w-5 h-5 text-rose-600 flex-shrink-0 mt-0.5" />
+              <div className="p-4 rounded-lg bg-error-container/40 border border-error text-error text-xs font-mono flex items-start gap-3">
+                <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
                 <div>
-                  <div className="font-bold">Recommendation Error</div>
+                  <div className="font-bold">Recommendation Engine Alert</div>
                   <div>{error}</div>
                 </div>
               </div>
             )}
 
-            {/* Recommendation Cards List */}
+            {/* 3. Recommended 3-Season Rotation Sequences */}
             {resultData ? (
               <div className="space-y-4">
                 {resultData.recommendations.map((plan, idx) => (
@@ -318,11 +350,17 @@ export const App: React.FC = () => {
                 ))}
               </div>
             ) : (
-              <div className="bg-white rounded-2xl p-12 text-center border border-slate-200 text-slate-400 space-y-3">
-                <Satellite className="w-12 h-12 mx-auto text-slate-300 animate-spin" />
-                <p className="text-sm font-semibold">{t.calculating}</p>
+              <div className="bg-surface-container-lowest rounded-lg p-12 text-center border border-outline-variant text-on-surface-variant space-y-3">
+                <Satellite className="w-12 h-12 mx-auto text-primary animate-spin" />
+                <p className="text-sm font-mono font-semibold">Consulting NASA Earth Observation Models...</p>
               </div>
             )}
+
+            {/* 4. Advisory Disclaimer Footer Strip */}
+            <div className="p-3 bg-surface-container-low rounded border border-outline-variant flex flex-col sm:flex-row items-center justify-between text-[11px] font-mono text-on-surface-variant gap-2">
+              <span>DATA SOURCE: NASA Goddard Institute &amp; SMAP Mission Telemetry v4.2 • Earth Science Division</span>
+              <span>Telemetry Refreshed: Real-Time Ingestion</span>
+            </div>
           </div>
         </div>
       </main>

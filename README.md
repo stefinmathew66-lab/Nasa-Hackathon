@@ -133,3 +133,4 @@ backend/tests/test_scoring.py ... [100%]
 
 ## 8. License & Acknowledgments
 Built for the **NASA Space Apps Challenge**. Data provided by **NASA Langley Research Center (NASA POWER)** and **ISRIC World Soil Information**.
+

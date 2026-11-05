@@ -1,5 +1,5 @@
 import React from 'react';
-import { Flame, CloudRain, AlertTriangle, RefreshCw } from 'lucide-react';
+import { AlertTriangle, RefreshCw, CheckCircle } from 'lucide-react';
 import { ClimateStressScenario } from '../types';
 import { Translations } from '../locales/translations';
 
@@ -25,55 +25,28 @@ export const ClimateShockSlider: React.FC<ClimateShockSliderProps> = ({
   };
 
   return (
-    <div className="bg-gradient-to-r from-orange-50 via-rose-50 to-amber-50 rounded-2xl p-4 sm:p-5 border border-orange-200/80 shadow-sm no-print">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-orange-200/60 gap-2">
-        <div className="flex items-center space-x-2">
-          <div className="p-1.5 rounded-lg bg-orange-600 text-white">
-            <Flame className="w-4 h-4" />
-          </div>
-          <div>
-            <h3 className="text-sm font-bold text-slate-900 flex items-center space-x-2">
-              <span>{t.stressTestTitle}</span>
-              {isStressed && (
-                <span className="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-rose-600 text-white tracking-wider animate-pulse">
-                  Active Simulation
-                </span>
-              )}
-            </h3>
-            <p className="text-xs text-slate-600">{t.stressTestDesc}</p>
-          </div>
+    <div className="bg-error-container/20 rounded-lg border border-error/30 p-4 space-y-4 shadow-sm relative overflow-hidden no-print">
+      {/* Header */}
+      <div className="flex items-center justify-between border-b border-error/20 pb-2.5">
+        <div className="flex items-center gap-2">
+          <AlertTriangle className="w-5 h-5 text-error" />
+          <h3 className="font-headline font-bold text-base text-error">
+            Climate Stress &amp; What-If Simulator
+          </h3>
         </div>
-
-        <div className="flex items-center space-x-2">
-          {isStressed && (
-            <button
-              onClick={handleReset}
-              className="text-xs font-semibold px-2.5 py-1 rounded-lg bg-white/80 text-slate-700 hover:bg-white border border-slate-300"
-            >
-              Reset Baseline
-            </button>
-          )}
-          <button
-            onClick={onApply}
-            disabled={isLoading}
-            className="text-xs font-bold px-3 py-1.5 rounded-lg bg-rose-600 hover:bg-rose-700 text-white shadow-sm flex items-center space-x-1.5 disabled:opacity-50 transition"
-          >
-            <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? 'animate-spin' : ''}`} />
-            <span>Stress Test Plan</span>
-          </button>
-        </div>
+        <span className="text-[10px] font-mono bg-error text-white px-2 py-0.5 rounded font-bold uppercase tracking-wider animate-pulse">
+          {isStressed ? 'STRESS ACTIVE' : 'SIMULATOR READY'}
+        </span>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-3">
-        {/* Rainfall reduction */}
-        <div className="bg-white/70 p-3 rounded-xl border border-orange-200/60">
-          <div className="flex items-center justify-between text-xs font-bold text-slate-800 mb-1">
-            <span className="flex items-center space-x-1.5 text-blue-900">
-              <CloudRain className="w-4 h-4 text-blue-600" />
-              <span>{t.rainReduction}</span>
-            </span>
-            <span className={`font-mono font-extrabold ${scenario.rainfall_delta_pct < 0 ? 'text-rose-600' : 'text-slate-600'}`}>
-              {scenario.rainfall_delta_pct > 0 ? `+${scenario.rainfall_delta_pct}%` : `${scenario.rainfall_delta_pct}%`}
+      {/* Two Reactive Sliders */}
+      <div className="space-y-3">
+        {/* Rainfall Deficit */}
+        <div className="bg-surface-container-lowest/90 p-2.5 rounded border border-outline-variant">
+          <div className="flex justify-between items-center mb-1">
+            <span className="text-xs font-mono font-medium text-on-surface">Monsoon Precipitation Anomaly</span>
+            <span className="text-[11px] font-mono text-error font-bold bg-error-container px-2 py-0.5 rounded">
+              {scenario.rainfall_delta_pct > 0 ? `+${scenario.rainfall_delta_pct}%` : `${scenario.rainfall_delta_pct}%`} vs 30-yr baseline
             </span>
           </div>
           <input
@@ -83,40 +56,64 @@ export const ClimateShockSlider: React.FC<ClimateShockSliderProps> = ({
             step="5"
             value={scenario.rainfall_delta_pct}
             onChange={(e) => onChange({ ...scenario, rainfall_delta_pct: parseFloat(e.target.value) })}
-            className="w-full accent-rose-600 cursor-pointer"
+            className="w-full accent-error"
           />
-          <div className="flex justify-between text-[10px] text-slate-400 mt-0.5">
-            <span>Severe Drought (-50%)</span>
+          <div className="flex justify-between text-[10px] font-mono text-on-surface-variant mt-0.5">
+            <span>-50% Extreme Drought</span>
             <span>Normal (0%)</span>
-            <span>Excess (+20%)</span>
+            <span>+20% High Rain</span>
           </div>
         </div>
 
-        {/* Temperature increase */}
-        <div className="bg-white/70 p-3 rounded-xl border border-orange-200/60">
-          <div className="flex items-center justify-between text-xs font-bold text-slate-800 mb-1">
-            <span className="flex items-center space-x-1.5 text-orange-900">
-              <Flame className="w-4 h-4 text-orange-600" />
-              <span>{t.tempIncrease}</span>
-            </span>
-            <span className={`font-mono font-extrabold ${scenario.temp_delta_c > 0 ? 'text-orange-600' : 'text-slate-600'}`}>
-              +{scenario.temp_delta_c.toFixed(1)}°C
+        {/* Temperature Shift */}
+        <div className="bg-surface-container-lowest/90 p-2.5 rounded border border-outline-variant">
+          <div className="flex justify-between items-center mb-1">
+            <span className="text-xs font-mono font-medium text-on-surface">Temperature Anomaly Shift</span>
+            <span className="text-[11px] font-mono text-error font-bold bg-error-container px-2 py-0.5 rounded">
+              +{scenario.temp_delta_c.toFixed(1)}°C Heat Stress
             </span>
           </div>
           <input
             type="range"
             min="0"
-            max="5"
+            max="4.5"
             step="0.5"
             value={scenario.temp_delta_c}
             onChange={(e) => onChange({ ...scenario, temp_delta_c: parseFloat(e.target.value) })}
-            className="w-full accent-orange-600 cursor-pointer"
+            className="w-full accent-error"
           />
-          <div className="flex justify-between text-[10px] text-slate-400 mt-0.5">
-            <span>Historical Avg (+0°C)</span>
-            <span>Moderate (+2.5°C)</span>
-            <span>Extreme Heat (+5.0°C)</span>
+          <div className="flex justify-between text-[10px] font-mono text-on-surface-variant mt-0.5">
+            <span>Baseline (0.0°C)</span>
+            <span>Moderate (+2.0°C)</span>
+            <span>Severe (+4.5°C)</span>
           </div>
+        </div>
+      </div>
+
+      {/* Trigger & Model Strip */}
+      <div className="flex items-center justify-between pt-1">
+        <div className="text-xs font-mono text-on-surface-variant flex items-center gap-1.5">
+          <CheckCircle className="w-3.5 h-3.5 text-secondary" />
+          <span>Coupled SMAP-POWER 2026</span>
+        </div>
+
+        <div className="flex items-center gap-2">
+          {isStressed && (
+            <button
+              onClick={handleReset}
+              className="text-xs font-mono font-semibold px-2.5 py-1 rounded bg-white text-on-surface border border-outline-variant hover:bg-surface-container"
+            >
+              Reset
+            </button>
+          )}
+          <button
+            onClick={onApply}
+            disabled={isLoading}
+            className="px-3 py-1.5 rounded bg-surface-container-lowest border border-error text-error hover:bg-error hover:text-white text-xs font-mono font-semibold transition-colors flex items-center gap-1 cursor-pointer disabled:opacity-50"
+          >
+            <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? 'animate-spin' : ''}`} />
+            <span>Recalculate Stress Matrix</span>
+          </button>
         </div>
       </div>
     </div>

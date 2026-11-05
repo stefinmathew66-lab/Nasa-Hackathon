@@ -94,3 +94,4 @@ export interface RecommendationResponse {
   whatsapp_format: string;
   generation_time_ms: number;
 }
+

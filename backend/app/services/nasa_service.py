@@ -132,3 +132,4 @@ class NasaClimateService:
             data_source=source_label,
             is_simulated_stress=is_stress
         )
+

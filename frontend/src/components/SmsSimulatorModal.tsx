@@ -126,3 +126,4 @@ export const SmsSimulatorModal: React.FC<SmsSimulatorModalProps> = ({
     </div>
   );
 };
+
