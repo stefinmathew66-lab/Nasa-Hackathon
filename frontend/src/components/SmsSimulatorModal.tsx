@@ -38,6 +38,9 @@ export const SmsSimulatorModal: React.FC<SmsSimulatorModalProps> = ({
   const [tab, setTab] = useState<'sms' | 'whatsapp' | 'voice'>('sms');
   const [copied, setCopied] = useState(false);
   const [isPlayingVoice, setIsPlayingVoice] = useState(false);
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [callStatus, setCallStatus] = useState<string | null>(null);
+  const [isCallingPhone, setIsCallingPhone] = useState(false);
 
   // Stop any active speech synthesis when closing or switching tabs
   const stopVoice = () => {
@@ -61,6 +64,45 @@ export const SmsSimulatorModal: React.FC<SmsSimulatorModalProps> = ({
     navigator.clipboard.writeText(currentContent);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
+  };
+
+  // Dispatch actual telephone call via backend API
+  const handleDispatchRealCall = async () => {
+    if (!phoneNumber || phoneNumber.trim().length < 8) {
+      alert("Please enter a valid phone number with country code (e.g. +91 98765 43210 or +1 202 555 0199)");
+      return;
+    }
+
+    setIsCallingPhone(true);
+    setCallStatus("Contacting Twilio Voice Gateway...");
+
+    try {
+      const res = await fetch('/api/channels/voice/call', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          phone_number: phoneNumber.trim(),
+          language: currentLang,
+          voice_script: voiceScript || smsText
+        })
+      });
+
+      const data = await res.json();
+      if (data.status === 'calling') {
+        setCallStatus(`📞 Outbound call placed to ${phoneNumber}! Answer your phone.`);
+      } else if (data.status === 'live_browser_audio') {
+        setCallStatus("💡 Real GSM calling requires Twilio credentials in .env. Starting live audio call in browser:");
+        handleToggleVoice();
+      } else {
+        setCallStatus(data.error || "Unable to dispatch call. Starting audio call:");
+        handleToggleVoice();
+      }
+    } catch (e: any) {
+      setCallStatus("Error connecting to voice gateway. Initiating live audio call:");
+      handleToggleVoice();
+    } finally {
+      setIsCallingPhone(false);
+    }
   };
 
   const handleToggleVoice = () => {
@@ -257,6 +299,34 @@ export const SmsSimulatorModal: React.FC<SmsSimulatorModalProps> = ({
                 {voiceScript || smsText}
               </div>
 
+              {/* Real Phone Number Calling Section */}
+              <div className="mt-3 pt-3 border-t border-zinc-800/80 flex flex-col gap-2">
+                <div className="flex gap-2">
+                  <input
+                    type="tel"
+                    value={phoneNumber}
+                    onChange={(e) => setPhoneNumber(e.target.value)}
+                    placeholder={t?.phoneNumberPlaceholder || "+91 98765 43210 / +1 202 555 0199"}
+                    className="flex-1 bg-zinc-950 border border-zinc-700 rounded-lg px-2.5 py-1.5 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-emerald-500"
+                  />
+                  <button
+                    type="button"
+                    onClick={handleDispatchRealCall}
+                    disabled={isCallingPhone}
+                    className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-semibold flex items-center gap-1.5 transition cursor-pointer disabled:opacity-50"
+                  >
+                    <Phone className="w-3 h-3" />
+                    <span>{isCallingPhone ? "Calling..." : (t?.callPhone || "Call Phone")}</span>
+                  </button>
+                </div>
+
+                {callStatus && (
+                  <div className="text-[11px] px-2.5 py-1 rounded bg-zinc-950 border border-zinc-700/80 text-emerald-400">
+                    {callStatus}
+                  </div>
+                )}
+              </div>
+
               {/* Audio Control Action Button */}
               <div className="mt-3 flex gap-2">
                 <button
@@ -265,7 +335,7 @@ export const SmsSimulatorModal: React.FC<SmsSimulatorModalProps> = ({
                   className={`flex-1 py-2 px-3 rounded-lg text-xs font-semibold flex items-center justify-center gap-2 transition cursor-pointer ${
                     isPlayingVoice
                       ? 'bg-red-600 hover:bg-red-700 text-white shadow-xs'
-                      : 'bg-emerald-600 hover:bg-emerald-500 text-white shadow-xs'
+                      : 'bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700'
                   }`}
                 >
                   {isPlayingVoice ? (
@@ -276,7 +346,7 @@ export const SmsSimulatorModal: React.FC<SmsSimulatorModalProps> = ({
                   ) : (
                     <>
                       <Play className="w-3.5 h-3.5 fill-current" />
-                      <span>{t?.playVoiceAdvisory || "Listen to Spoken Call"}</span>
+                      <span>{t?.startLiveCall || "Start Live Voice Call"}</span>
                     </>
                   )}
                 </button>

@@ -95,6 +95,24 @@ export interface Translations {
   nitrogenBalance: string;
   climateRiskNotice: string;
 
+  // Stepper Guided Flow
+  step1: string;
+  step1Desc: string;
+  step2: string;
+  step2Desc: string;
+  step3: string;
+  step3Desc: string;
+  step4: string;
+  continueToFarm: string;
+  continueToPriorities: string;
+  generateRotations: string;
+  backToMap: string;
+  backToSoil: string;
+  editInputs: string;
+  callPhone: string;
+  startLiveCall: string;
+  phoneNumberPlaceholder: string;
+
   // Low Tech Modal
   lowTechTitle: string;
   cheapestDeviceFirst: string;
@@ -201,6 +219,23 @@ export const translations: Record<string, Translations> = {
     nitrogenBalance: "Estimated Biological Nitrogen Balance",
     climateRiskNotice: "Climate Risk Notice",
 
+    step1: "1. Field Location",
+    step1Desc: "Drop a pin on your farm or choose a benchmark pilot region.",
+    step2: "2. Soil & Water",
+    step2Desc: "4 simple questions to calibrate NASA root-zone & water requirements.",
+    step3: "3. Priorities",
+    step3Desc: "Adjust what matters most for your farming strategy.",
+    step4: "4. Verified Rotations",
+    continueToFarm: "Continue: Soil & Water Profile →",
+    continueToPriorities: "Continue: Strategic Priorities →",
+    generateRotations: "Generate NASA Climate-Smart Rotations 🚀",
+    backToMap: "← Back to Map",
+    backToSoil: "← Back to Soil Profile",
+    editInputs: "← Modify Farm Inputs",
+    callPhone: "Call Mobile Phone",
+    startLiveCall: "Start Live Voice Call",
+    phoneNumberPlaceholder: "Enter phone number (e.g. +91 98765 43210)",
+
     lowTechTitle: "Multi-Channel Delivery Simulator",
     cheapestDeviceFirst: "Design Principle: Reaching 100% of Smallholders via SMS, WhatsApp & Voice",
     basicSms: "Basic Phone SMS (160 Chars)",
@@ -303,6 +338,23 @@ export const translations: Record<string, Translations> = {
     cycleTotal: "कुल चक्र जल",
     nitrogenBalance: "अनुमानित जैविक नाइट्रोजन संतुलन",
     climateRiskNotice: "मौसम जोखिम चेतावनी",
+
+    step1: "1. खेत का स्थान",
+    step1Desc: "नक्शे पर अपने खेत का स्थान चुनें या नमूना क्षेत्र चुनें।",
+    step2: "2. मिट्टी व सिंचाई",
+    step2Desc: "मिट्टी और जल आवश्यकताओं को कैलिब्रेट करने के लिए 4 सरल प्रश्न।",
+    step3: "3. प्राथमिकताएं",
+    step3Desc: "तय करें कि आपके लिए सबसे महत्वपूर्ण क्या है।",
+    step4: "4. अनुशंसित फसल चक्र",
+    continueToFarm: "आगे बढ़ें: मिट्टी और जल विवरण →",
+    continueToPriorities: "आगे बढ़ें: रणनीतिक प्राथमिकताएं →",
+    generateRotations: "नासा जलवायु-स्मार्ट फसल चक्र खोजें 🚀",
+    backToMap: "← नक्शे पर वापस जाएं",
+    backToSoil: "← मिट्टी विवरण पर वापस जाएं",
+    editInputs: "← खेत की जानकारी बदलें",
+    callPhone: "मोबाइल पर कॉल करें",
+    startLiveCall: "लाइव वॉयस कॉल शुरू करें",
+    phoneNumberPlaceholder: "फ़ोन नंबर दर्ज करें (उदा. +91 98765 43210)",
 
     lowTechTitle: "मल्टी-चैनल डिलीवरी सिमुलेटर",
     cheapestDeviceFirst: "डिजाइन सिद्धांत: एसएमएस, व्हाट्सएप व वॉयस कॉल द्वारा 100% किसानों तक पहुंच",
@@ -407,6 +459,23 @@ export const translations: Record<string, Translations> = {
     nitrogenBalance: "Kadirio la Naitrojeni ya Asili",
     climateRiskNotice: "Tahadhari ya Hatari ya Hewa",
 
+    step1: "1. Eneo la Shamba",
+    step1Desc: "Weka alama kwenye shamba au chagua eneo la majaribio.",
+    step2: "2. Udongo na Maji",
+    step2Desc: "Maswali 4 rahisi kurekebisha mahitaji ya maji na udongo.",
+    step3: "3. Vipaumbele",
+    step3Desc: "Chagua mikakati muhimu zaidi kwa shamba lako.",
+    step4: "4. Mizunguko ya Mazao",
+    continueToFarm: "Endelea: Wasifu wa Udongo na Maji →",
+    continueToPriorities: "Endelea: Weka Vipaumbele vya Kilimo →",
+    generateRotations: "Tafuta Mizunguko ya Mazao ya NASA 🚀",
+    backToMap: "← Rudi kwenye Ramani",
+    backToSoil: "← Rudi kwenye Wasifu wa Udongo",
+    editInputs: "← Badilisha Taarifa za Shamba",
+    callPhone: "Piga Simu kwa Simu ya Mkononi",
+    startLiveCall: "Anzisha Simu ya Sauti Moja kwa Moja",
+    phoneNumberPlaceholder: "Weka namba ya simu (mfano +254 700 000000)",
+
     lowTechTitle: "Uigaji wa Njia Mbalimbali za Utoaji",
     cheapestDeviceFirst: "Kanuni ya Muundo: Kuwafikia 100% ya Wakulima kupitia SMS, WhatsApp na Sauti",
     basicSms: "SMS ya Simu ya Kawaida (Herufi 160)",
@@ -509,6 +578,23 @@ export const translations: Record<string, Translations> = {
     cycleTotal: "Agua Total del Ciclo",
     nitrogenBalance: "Balance Estimado de Nitrógeno Biológico",
     climateRiskNotice: "Aviso de Riesgo Climático",
+
+    step1: "1. Ubicación del Campo",
+    step1Desc: "Marque su finca en el mapa o elija una región piloto.",
+    step2: "2. Suelo y Agua",
+    step2Desc: "4 preguntas sencillas para calibrar las necesidades de suelo y agua.",
+    step3: "3. Prioridades",
+    step3Desc: "Ajuste sus objetivos agronómicos principales.",
+    step4: "4. Rotaciones Verificadas",
+    continueToFarm: "Continuar: Perfil de Suelo y Agua →",
+    continueToPriorities: "Continuar: Prioridades Estratégicas →",
+    generateRotations: "Generar Rotaciones Climáticamente Inteligentes 🚀",
+    backToMap: "← Volver al Mapa",
+    backToSoil: "← Volver a Perfil de Suelo",
+    editInputs: "← Modificar Datos de la Finca",
+    callPhone: "Llamar al Teléfono Móvil",
+    startLiveCall: "Iniciar Llamada de Voz en Vivo",
+    phoneNumberPlaceholder: "Ingrese número telefónico (ej. +34 600 000 000)",
 
     lowTechTitle: "Simulador de Entrega Multicanal",
     cheapestDeviceFirst: "Principio de Diseño: Llegar al 100% de Pequeños Agricultores vía SMS, WhatsApp y Voz",

@@ -1,10 +1,12 @@
 import time
 import os
+import httpx
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
-from typing import Dict, Any, List
+from pydantic import BaseModel, Field
+from typing import Dict, Any, List, Optional
 
 from .schemas import (
     RecommendationRequest,
@@ -129,6 +131,71 @@ async def inbound_whatsapp_webhook():
         "status": "active",
         "channel": "WhatsApp Business Platform",
         "features": ["Location Pin Ingestion", "Rich Sequence Cards", "PDF Dossier Delivery"]
+    }
+
+class VoiceCallRequest(BaseModel):
+    phone_number: str
+    language: str = "en"
+    voice_script: Optional[str] = None
+    twilio_sid: Optional[str] = None
+    twilio_token: Optional[str] = None
+    twilio_from: Optional[str] = None
+
+@app.post("/api/channels/voice/call")
+async def place_voice_call(req: VoiceCallRequest):
+    """
+    Places an actual telephone call to the farmer's or judge's phone via Twilio API.
+    If Twilio credentials are in .env or the request, dials the phone number directly.
+    Otherwise, returns formatted payload for the browser live speech call.
+    """
+    account_sid = req.twilio_sid or os.getenv("TWILIO_ACCOUNT_SID")
+    auth_token = req.twilio_token or os.getenv("TWILIO_AUTH_TOKEN")
+    from_number = req.twilio_from or os.getenv("TWILIO_PHONE_NUMBER", "+12025550199")
+
+    script = req.voice_script or "Hello. This is your NASA Crop Rotation Advisory hotline."
+    voice_lang = {"hi": "hi-IN", "es": "es-ES", "sw": "sw-KE"}.get(req.language, "en-US")
+
+    if account_sid and auth_token and account_sid.startswith("AC"):
+        try:
+            twiml = f"<Response><Say language='{voice_lang}'>{script}</Say><Pause length='1'/><Say language='{voice_lang}'>Thank you for using NASA Crop Rotation Advisor.</Say></Response>"
+            async with httpx.AsyncClient() as client:
+                res = await client.post(
+                    f"https://api.twilio.com/2010-04-01/Accounts/{account_sid}/Calls.json",
+                    auth=(account_sid, auth_token),
+                    data={
+                        "To": req.phone_number,
+                        "From": from_number,
+                        "Twiml": twiml
+                    },
+                    timeout=10.0
+                )
+                if res.status_code in [200, 201]:
+                    call_data = res.json()
+                    return {
+                        "status": "calling",
+                        "call_sid": call_data.get("sid"),
+                        "to": req.phone_number,
+                        "message": f"Real telephone call placed to {req.phone_number}! Answer your phone to hear the advisory."
+                    }
+                else:
+                    return {
+                        "status": "error",
+                        "error": f"Twilio API rejected call ({res.status_code}): {res.text}",
+                        "voice_script": script
+                    }
+        except Exception as e:
+            return {
+                "status": "error",
+                "error": str(e),
+                "voice_script": script
+            }
+
+    return {
+        "status": "live_browser_audio",
+        "to": req.phone_number,
+        "message": "Twilio credentials not configured in environment. Initiating Live Speech Call in browser.",
+        "voice_script": script,
+        "language": req.language
     }
 
 # Static frontend files mount (serves full frontend from FastAPI)
