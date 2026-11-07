@@ -329,13 +329,13 @@ export const App: React.FC = () => {
                 <span className="px-2 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800">
                   Step 3 of 3
                 </span>
-                <span className="text-xs text-zinc-400">Multi-Objective Optimization</span>
+                <span className="text-xs text-zinc-500 font-medium">{t.step3}</span>
               </div>
               <h1 className="text-2xl font-bold tracking-tight text-zinc-900 mt-1">
-                {t.step3}
+                {t.farmerGoalsTitle}
               </h1>
               <p className="text-sm text-zinc-500 mt-1">
-                {t.step3Desc}
+                {t.farmerGoalsSubtitle}
               </p>
             </div>
 

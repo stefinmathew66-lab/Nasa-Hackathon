@@ -65,6 +65,27 @@ export interface Translations {
   soilOrganicMatter: string;
   smallholderCashFlow: string;
   climateRiskBuffer: string;
+  farmerGoalsTitle: string;
+  farmerGoalsSubtitle: string;
+  droughtStrategyTitle: string;
+  droughtStrategyDesc: string;
+  soilStrategyTitle: string;
+  soilStrategyDesc: string;
+  incomeStrategyTitle: string;
+  incomeStrategyDesc: string;
+  waterGoalDesc: string;
+  soilGoalDesc: string;
+  incomeGoalDesc: string;
+  riskGoalDesc: string;
+  priorityNormal: string;
+  priorityHigh: string;
+  priorityMax: string;
+  fineTuneTitle: string;
+  fineTuneDesc: string;
+  favorsCropsLabel: string;
+  droughtCropsExample: string;
+  soilCropsExample: string;
+  incomeCropsExample: string;
 
   // Climate Simulator (ClimateShockSlider)
   climateStressSimulator: string;
@@ -191,6 +212,27 @@ export const translations: Record<string, Translations> = {
     soilOrganicMatter: "Soil Health & Nitrogen",
     smallholderCashFlow: "Smallholder Cash Flow",
     climateRiskBuffer: "Climate Risk Buffer",
+    farmerGoalsTitle: "What is your primary goal for this field?",
+    farmerGoalsSubtitle: "Choose a quick 1-click strategy, or fine-tune individual goals below:",
+    droughtStrategyTitle: "Drought Defense",
+    droughtStrategyDesc: "Save maximum water & withstand dry spells",
+    soilStrategyTitle: "Soil Restoration",
+    soilStrategyDesc: "Rebuild exhausted soil with biological nitrogen",
+    incomeStrategyTitle: "Market Cash Flow",
+    incomeStrategyDesc: "Maximize crop harvest value and income",
+    waterGoalDesc: "Prefers crops with low water requirements (e.g. Sorghum, Pearl Millet)",
+    soilGoalDesc: "Prioritizes nitrogen-fixing pulses (Chickpea, Pigeonpea, Lentil)",
+    incomeGoalDesc: "Balances food security with profitable market cash crops",
+    riskGoalDesc: "Chooses hardy crops resistant to heat (>35°C) and erratic rainfall",
+    priorityNormal: "Normal",
+    priorityHigh: "High",
+    priorityMax: "Maximum",
+    fineTuneTitle: "Fine-Tune Individual Goals",
+    fineTuneDesc: "Adjust priority levels or use the 1-click strategy presets above.",
+    favorsCropsLabel: "Favors crops like:",
+    droughtCropsExample: "Sorghum, Pearl Millet, Cowpea",
+    soilCropsExample: "Pigeonpea, Chickpea, Groundnut",
+    incomeCropsExample: "Sesame, Soybean, Sunflower",
 
     climateStressSimulator: "Climate Stress Simulator",
     simulationActive: "Simulation Active",
@@ -311,6 +353,27 @@ export const translations: Record<string, Translations> = {
     soilOrganicMatter: "मिट्टी स्वास्थ्य एवं नाइट्रोजन",
     smallholderCashFlow: "किसान नकदी प्रवाह",
     climateRiskBuffer: "जलवायु जोखिम सुरक्षा",
+    farmerGoalsTitle: "इस खेत के लिए आपका मुख्य लक्ष्य क्या है?",
+    farmerGoalsSubtitle: "एक त्वरित रणनीति चुनें, या नीचे अपने लक्ष्यों को अनुकूलित करें:",
+    droughtStrategyTitle: "सूखा सुरक्षा",
+    droughtStrategyDesc: "अधिकतम जल बचत और कम वर्षा में बचाव",
+    soilStrategyTitle: "मिट्टी सुधार",
+    soilStrategyDesc: "थकी हुई मिट्टी में प्राकृतिक नाइट्रोजन की पुनःपूर्ति",
+    incomeStrategyTitle: "अधिकतम आय",
+    incomeStrategyDesc: "बाजार में अधिक मूल्य वाली फसलों से लाभ",
+    waterGoalDesc: "कम पानी वाली फसलों को प्राथमिकता देता है (जैसे ज्वार, बाजरा)",
+    soilGoalDesc: "नाइट्रोजन संचायक दालों को बढ़ावा देता है (चना, अरहर, मसूर)",
+    incomeGoalDesc: "खाद्य सुरक्षा और नकदी फसलों के बीच संतुलन",
+    riskGoalDesc: "गर्मी (>35°C) और सूखे को सहन करने वाली फसलें",
+    priorityNormal: "सामान्य",
+    priorityHigh: "उच्च",
+    priorityMax: "सर्वोच्च",
+    fineTuneTitle: "व्यक्तिगत प्राथमिकताओं को अनुकूलित करें",
+    fineTuneDesc: "प्राथमिकता स्तर समायोजित करें या ऊपर दी गई त्वरित रणनीति चुनें।",
+    favorsCropsLabel: "प्रमुख फसलें:",
+    droughtCropsExample: "ज्वार, बाजरा, लोबिया",
+    soilCropsExample: "अरहर, चना, मूंगफली",
+    incomeCropsExample: "तिल, सोयाबीन, सूरजमुखी",
 
     climateStressSimulator: "जलवायु तनाव सिम्युलेटर",
     simulationActive: "सिमुलेशन सक्रिय",
@@ -431,6 +494,27 @@ export const translations: Record<string, Translations> = {
     soilOrganicMatter: "Afya ya Udongo na Naitrojeni",
     smallholderCashFlow: "Mapato ya Mkulima",
     climateRiskBuffer: "Kizuizi cha Hatari ya Hewa",
+    farmerGoalsTitle: "Lengo lako kuu kwa shamba hili ni lipi?",
+    farmerGoalsSubtitle: "Chagua mkakati wa haraka, au rekebisha malengo hapa chini:",
+    droughtStrategyTitle: "Ulinzi dhidi ya Ukame",
+    droughtStrategyDesc: "Okoa maji mengi na stahimili ukame",
+    soilStrategyTitle: "Kutengeneza Udongo",
+    soilStrategyDesc: "Rutubisha udongo uliochoka kwa naitrojeni ya asili",
+    incomeStrategyTitle: "Mapato ya Soko",
+    incomeStrategyDesc: "Ongeza thamani ya mazao na mapato ya fedha",
+    waterGoalDesc: "Hupendelea mazao yanayohitaji maji kidogo (k.m. Mtama, Uwele)",
+    soilGoalDesc: "Hupa kipaumbele kunde na dengu zinazoongeza naitrojeni",
+    incomeGoalDesc: "Husawazisha chakula na mazao ya biashara yenye faida",
+    riskGoalDesc: "Huchagua mazao yanayostahimili joto kali (>35°C) na ukame",
+    priorityNormal: "Kawaida",
+    priorityHigh: "Juu",
+    priorityMax: "Kiwango cha Juu Zaidi",
+    fineTuneTitle: "Rekebisha Malengo Binafsi",
+    fineTuneDesc: "Rekebisha viwango vya kipaumbele au chagua mkakati wa haraka hapo juu.",
+    favorsCropsLabel: "Hupendelea mazao kama:",
+    droughtCropsExample: "Mtama, Uwele, Kunde",
+    soilCropsExample: "Mbaazi, Dengu, Karanga",
+    incomeCropsExample: "Ufuta, Soya, Alizeti",
 
     climateStressSimulator: "Kielelezo cha Mkazo wa Tabianchi",
     simulationActive: "Uigaji Umewashwa",
@@ -551,6 +635,27 @@ export const translations: Record<string, Translations> = {
     soilOrganicMatter: "Salud del Suelo y Nitrógeno",
     smallholderCashFlow: "Flujo de Caja",
     climateRiskBuffer: "Buffer de Riesgo Climático",
+    farmerGoalsTitle: "¿Cuál es su objetivo principal para este campo?",
+    farmerGoalsSubtitle: "Elija una estrategia rápida, o ajuste sus metas individuales a continuación:",
+    droughtStrategyTitle: "Defensa contra Sequía",
+    droughtStrategyDesc: "Ahorre agua al máximo y resista la falta de lluvia",
+    soilStrategyTitle: "Regeneración del Suelo",
+    soilStrategyDesc: "Reconstruya suelo agotado con nitrógeno biológico",
+    incomeStrategyTitle: "Ingresos de Mercado",
+    incomeStrategyDesc: "Maximice ingresos con cultivos de mayor valor comercial",
+    waterGoalDesc: "Prefiere cultivos con baja necesidad de agua (ej. Sorgo, Mijo)",
+    soilGoalDesc: "Prioriza leguminosas fijadoras de nitrógeno (Garbanzo, Guandul)",
+    incomeGoalDesc: "Equilibra la seguridad alimentaria con cultivos comerciales",
+    riskGoalDesc: "Selecciona cultivos resistentes al calor (>35°C) y sequías",
+    priorityNormal: "Normal",
+    priorityHigh: "Alta",
+    priorityMax: "Máxima Prioridad",
+    fineTuneTitle: "Ajustar Objetivos Individuales",
+    fineTuneDesc: "Modifique los niveles de prioridad o elija una estrategia predefinida arriba.",
+    favorsCropsLabel: "Favorece cultivos como:",
+    droughtCropsExample: "Sorgo, Mijo Perla, Caupí",
+    soilCropsExample: "Guandul, Garbanzo, Maní",
+    incomeCropsExample: "Sésamo, Soja, Girasol",
 
     climateStressSimulator: "Simulador de Estrés Climático",
     simulationActive: "Simulación Activa",
