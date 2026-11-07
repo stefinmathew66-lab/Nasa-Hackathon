@@ -40,42 +40,42 @@ export const PrioritySliders: React.FC<PrioritySlidersProps> = ({
         <div className="flex items-center gap-2">
           <Sliders className="w-4 h-4 text-emerald-600" />
           <h2 className="text-sm font-semibold text-zinc-900">
-            Strategic Optimization Weights
+            {t.strategicWeights}
           </h2>
         </div>
         <div className="flex items-center gap-1.5">
           <button
             type="button"
             onClick={() => setPreset('water')}
-            className={`px-2 py-0.5 rounded text-[11px] font-medium transition ${
+            className={`px-2 py-0.5 rounded text-[11px] font-medium transition cursor-pointer ${
               priorities.save_water >= 2.5
                 ? 'bg-zinc-900 text-white'
                 : 'bg-zinc-100 text-zinc-600 hover:bg-zinc-200/70'
             }`}
           >
-            Drought
+            {t.drought}
           </button>
           <button
             type="button"
             onClick={() => setPreset('soil')}
-            className={`px-2 py-0.5 rounded text-[11px] font-medium transition ${
+            className={`px-2 py-0.5 rounded text-[11px] font-medium transition cursor-pointer ${
               priorities.improve_soil >= 2.5
                 ? 'bg-emerald-700 text-white'
                 : 'bg-zinc-100 text-zinc-600 hover:bg-zinc-200/70'
             }`}
           >
-            Soil
+            {t.soil}
           </button>
           <button
             type="button"
             onClick={() => setPreset('income')}
-            className={`px-2 py-0.5 rounded text-[11px] font-medium transition ${
+            className={`px-2 py-0.5 rounded text-[11px] font-medium transition cursor-pointer ${
               priorities.maximize_income >= 2.5
                 ? 'bg-zinc-900 text-white'
                 : 'bg-zinc-100 text-zinc-600 hover:bg-zinc-200/70'
             }`}
           >
-            Income
+            {t.income}
           </button>
         </div>
       </div>
@@ -85,7 +85,7 @@ export const PrioritySliders: React.FC<PrioritySlidersProps> = ({
         {/* Water Conservation */}
         <div className="flex flex-col gap-1.5">
           <div className="flex justify-between items-center text-xs">
-            <span className="font-medium text-zinc-700">Water Conservation</span>
+            <span className="font-medium text-zinc-700">{t.waterConservation}</span>
             <span className="font-semibold text-zinc-900">{toPct(priorities.save_water)}%</span>
           </div>
           <input
@@ -102,7 +102,7 @@ export const PrioritySliders: React.FC<PrioritySlidersProps> = ({
         {/* Soil Organic Matter */}
         <div className="flex flex-col gap-1.5">
           <div className="flex justify-between items-center text-xs">
-            <span className="font-medium text-zinc-700">Soil Organic Matter (SOM)</span>
+            <span className="font-medium text-zinc-700">{t.soilOrganicMatter}</span>
             <span className="font-semibold text-emerald-700">{toPct(priorities.improve_soil)}%</span>
           </div>
           <input
@@ -119,7 +119,7 @@ export const PrioritySliders: React.FC<PrioritySlidersProps> = ({
         {/* Smallholder Cash Flow */}
         <div className="flex flex-col gap-1.5">
           <div className="flex justify-between items-center text-xs">
-            <span className="font-medium text-zinc-700">Net Cash Flow Fit</span>
+            <span className="font-medium text-zinc-700">{t.smallholderCashFlow}</span>
             <span className="font-semibold text-zinc-900">{toPct(priorities.maximize_income)}%</span>
           </div>
           <input
@@ -136,7 +136,7 @@ export const PrioritySliders: React.FC<PrioritySlidersProps> = ({
         {/* Climate Risk Buffer */}
         <div className="flex flex-col gap-1.5">
           <div className="flex justify-between items-center text-xs">
-            <span className="font-medium text-zinc-700">Climate Risk Buffer</span>
+            <span className="font-medium text-zinc-700">{t.climateRiskBuffer}</span>
             <span className="font-semibold text-zinc-900">{toPct(priorities.reduce_risk)}%</span>
           </div>
           <input

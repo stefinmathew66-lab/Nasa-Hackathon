@@ -28,25 +28,25 @@ export const FarmerWizard: React.FC<FarmerWizardProps> = ({
         <div className="flex items-center gap-2">
           <Layers className="w-4 h-4 text-emerald-600" />
           <h2 className="text-sm font-semibold text-zinc-900">
-            Soil &amp; Water Profile
+            {t.soilWaterProfile}
           </h2>
         </div>
         <span className="text-xs text-zinc-400 font-normal">
-          Field Parameters
+          {t.fieldParameters}
         </span>
       </div>
 
       {/* Soil Texture Selection */}
       <div className="flex flex-col gap-1.5">
         <label className="text-xs font-medium text-zinc-500">
-          Soil Texture Horizon
+          {t.soilTextureHorizon}
         </label>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
           {[
-            { id: 'clay', label: 'Vertisol (Clay)' },
-            { id: 'loam', label: 'Silty Loam' },
-            { id: 'sandy', label: 'Sandy Aridisol' },
-            { id: 'auto', label: 'Auto (SMAP)' },
+            { id: 'clay', label: t.clayVertisol },
+            { id: 'loam', label: t.siltyLoam },
+            { id: 'sandy', label: t.sandyAridisol },
+            { id: 'auto', label: t.autoDetect },
           ].map((s) => {
             const isSelected = constraints.soil_type === s.id;
             return (
@@ -70,14 +70,14 @@ export const FarmerWizard: React.FC<FarmerWizardProps> = ({
       {/* Water Access Selection */}
       <div className="flex flex-col gap-1.5">
         <label className="text-xs font-medium text-zinc-500">
-          Irrigation Capacity
+          {t.irrigationCapacity}
         </label>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
           {[
-            { id: 'rainfed', label: 'Rainfed' },
-            { id: 'borewell', label: 'Borewell' },
-            { id: 'canal', label: 'Canal Network' },
-            { id: 'drip', label: 'Precision Drip' },
+            { id: 'rainfed', label: t.rainfed },
+            { id: 'borewell', label: t.borewell },
+            { id: 'canal', label: t.canalNetwork },
+            { id: 'drip', label: t.precisionDrip },
           ].map((w) => {
             const isSelected = constraints.water_access === w.id;
             return (
@@ -85,7 +85,7 @@ export const FarmerWizard: React.FC<FarmerWizardProps> = ({
                 key={w.id}
                 type="button"
                 onClick={() => updateField('water_access', w.id)}
-                className={`py-2 px-2.5 rounded-lg border text-xs font-medium transition text-center cursor-pointer flex items-center justify-center gap-1.5 ${
+                className={`py-2 px-2 rounded-lg border text-xs font-medium transition text-center cursor-pointer flex items-center justify-center gap-1.5 ${
                   isSelected
                     ? 'border-emerald-700 bg-emerald-700 text-white shadow-xs'
                     : 'border-zinc-200 bg-white text-zinc-700 hover:bg-zinc-50'
@@ -103,7 +103,7 @@ export const FarmerWizard: React.FC<FarmerWizardProps> = ({
       <div className="grid grid-cols-3 gap-3 pt-2 border-t border-zinc-100">
         {/* Field Size */}
         <div className="flex flex-col gap-1">
-          <span className="text-xs text-zinc-500 font-medium">Field Size</span>
+          <span className="text-xs text-zinc-500 font-medium">{t.fieldSize}</span>
           <div className="flex items-baseline gap-1">
             <input
               type="number"
@@ -120,37 +120,41 @@ export const FarmerWizard: React.FC<FarmerWizardProps> = ({
 
         {/* Prior Crop */}
         <div className="flex flex-col gap-1">
-          <span className="text-xs text-zinc-500 font-medium">Prior Crop</span>
+          <span className="text-xs text-zinc-500 font-medium">{t.priorCrop}</span>
           <select
             value={constraints.previous_crop_id || ''}
             onChange={(e) => updateField('previous_crop_id', e.target.value || undefined)}
             className="w-full bg-zinc-50 border border-zinc-200 rounded px-2 py-1 text-xs font-medium text-zinc-900 focus:outline-none focus:border-zinc-400 cursor-pointer"
           >
-            <option value="">Fallow / None</option>
-            <option value="cotton">Cotton</option>
-            <option value="maize">Maize</option>
-            <option value="wheat">Wheat</option>
-            <option value="chickpea">Chickpea</option>
-            <option value="soybean">Soybean</option>
+            <option value="">{t.fallowNone}</option>
+            <option value="cotton">Cotton / कपास</option>
+            <option value="maize">Maize / मक्का</option>
+            <option value="wheat">Wheat / गेहूं</option>
+            <option value="chickpea">Chickpea / चना</option>
+            <option value="soybean">Soybean / सोयाबीन</option>
           </select>
         </div>
 
         {/* Budget */}
         <div className="flex flex-col gap-1">
-          <span className="text-xs text-zinc-500 font-medium">Budget Tier</span>
+          <span className="text-xs text-zinc-500 font-medium">{t.budgetCap}</span>
           <div className="flex items-center gap-1">
-            {['low', 'medium', 'high'].map((lvl) => (
+            {[
+              { id: 'low', label: t.low },
+              { id: 'medium', label: t.medium },
+              { id: 'high', label: t.high },
+            ].map((b) => (
               <button
-                key={lvl}
+                key={b.id}
                 type="button"
-                onClick={() => updateField('budget_level', lvl)}
-                className={`flex-1 text-[11px] font-medium uppercase py-1 rounded transition ${
-                  constraints.budget_level === lvl
+                onClick={() => updateField('budget_level', b.id)}
+                className={`flex-1 text-[11px] font-medium py-1 rounded transition cursor-pointer ${
+                  constraints.budget_level === b.id
                     ? 'bg-zinc-900 text-white'
                     : 'bg-zinc-100 text-zinc-600 hover:bg-zinc-200/80'
                 }`}
               >
-                {lvl === 'medium' ? 'Med' : lvl}
+                {b.label}
               </button>
             ))}
           </div>

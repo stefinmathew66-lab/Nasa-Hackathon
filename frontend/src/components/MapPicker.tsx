@@ -109,7 +109,7 @@ export const MapPicker: React.FC<MapPickerProps> = ({
         <div className="flex items-center gap-2">
           <MapPin className="w-4 h-4 text-emerald-600" />
           <span className="text-sm font-semibold text-zinc-900">
-            Field Parcel Coordinates
+            {t.fieldCoordinates}
           </span>
         </div>
         <div className="flex items-center gap-2">
@@ -119,10 +119,10 @@ export const MapPicker: React.FC<MapPickerProps> = ({
           <button
             type="button"
             onClick={handleUseCurrentLocation}
-            className="text-xs font-medium px-2 py-0.5 rounded bg-zinc-100 hover:bg-zinc-200 text-zinc-700 transition flex items-center gap-1"
+            className="text-xs font-medium px-2 py-0.5 rounded bg-zinc-100 hover:bg-zinc-200 text-zinc-700 transition flex items-center gap-1 cursor-pointer"
           >
             <Navigation className="w-3 h-3 text-zinc-500" />
-            GPS
+            {t.gpsButton}
           </button>
         </div>
       </div>
@@ -134,14 +134,14 @@ export const MapPicker: React.FC<MapPickerProps> = ({
         {/* Subtle Satellite telemetry tag */}
         <div className="absolute top-2 left-2 z-10 pointer-events-none">
           <span className="px-2 py-0.5 rounded-full text-[11px] font-medium bg-white/90 backdrop-blur-xs text-zinc-700 border border-zinc-200 shadow-xs">
-            SMAP Downscaled 1km
+            {t.smapResolution}
           </span>
         </div>
       </div>
 
       {/* Benchmark Presets */}
       <div className="flex items-center gap-1.5 flex-wrap pt-1">
-        <span className="text-xs text-zinc-400 font-medium mr-1">Presets:</span>
+        <span className="text-xs text-zinc-400 font-medium mr-1">{t.presets}</span>
         {BENCHMARKS.map((bm) => {
           const isSelected = Math.abs(bm.lat - lat) < 0.1 && Math.abs(bm.lon - lon) < 0.1;
           return (

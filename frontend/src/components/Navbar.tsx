@@ -31,10 +31,10 @@ export const Navbar: React.FC<NavbarProps> = ({
             <div>
               <div className="flex items-center gap-2">
                 <span className="font-semibold text-sm sm:text-base tracking-tight text-zinc-900 leading-none">
-                  AgroSphere EO
+                  {t.brandName}
                 </span>
                 <span className="hidden sm:inline-flex items-center px-1.5 py-0.5 rounded text-[11px] font-medium bg-zinc-100 text-zinc-600 border border-zinc-200">
-                  NASA ADSS v4.2
+                  {t.adssVersion}
                 </span>
               </div>
             </div>
@@ -43,7 +43,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-200/80">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
             <span className="text-xs font-medium text-emerald-800 truncate max-w-[240px]">
-              {dataSource}
+              {dataSource === "SMAP & POWER Live" ? t.liveSatApi : dataSource}
             </span>
           </div>
         </div>
@@ -71,7 +71,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-zinc-200 text-xs font-medium text-zinc-700 bg-white hover:bg-zinc-50 transition-colors cursor-pointer shadow-xs"
           >
             <MessageSquare className="w-3.5 h-3.5 text-emerald-600" />
-            <span>SMS / WhatsApp</span>
+            <span>{t.whatsappSms}</span>
           </button>
 
           {/* Primary Action Button: Export */}
@@ -80,7 +80,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-zinc-900 text-white text-xs font-medium hover:bg-zinc-800 transition-colors cursor-pointer shadow-xs"
           >
             <Download className="w-3.5 h-3.5 text-zinc-300" />
-            <span>Export Dossier</span>
+            <span>{t.exportDossier}</span>
           </button>
         </div>
       </div>

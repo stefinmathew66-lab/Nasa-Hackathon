@@ -1,18 +1,21 @@
 import React, { useState } from 'react';
 import { X, MessageSquare, Phone, Copy, Check } from 'lucide-react';
+import { Translations } from '../locales/translations';
 
 interface SmsSimulatorModalProps {
   isOpen: boolean;
   onClose: () => void;
   smsText: string;
   whatsappText: string;
+  t?: Translations;
 }
 
 export const SmsSimulatorModal: React.FC<SmsSimulatorModalProps> = ({
   isOpen,
   onClose,
   smsText,
-  whatsappText
+  whatsappText,
+  t
 }) => {
   const [tab, setTab] = useState<'sms' | 'whatsapp'>('sms');
   const [copied, setCopied] = useState(false);
@@ -35,8 +38,8 @@ export const SmsSimulatorModal: React.FC<SmsSimulatorModalProps> = ({
           <div className="flex items-center space-x-2">
             <Phone className="w-5 h-5 text-emerald-400" />
             <div>
-              <h3 className="font-bold text-sm">Low-Tech Channel Simulation</h3>
-              <p className="text-[11px] text-slate-400">Design Principle: Cheapest Device First</p>
+              <h3 className="font-bold text-sm">{t?.lowTechTitle || "Low-Tech Channel Simulation"}</h3>
+              <p className="text-[11px] text-slate-400">{t?.cheapestDeviceFirst || "Design Principle: Cheapest Device First"}</p>
             </div>
           </div>
           <button
@@ -57,7 +60,7 @@ export const SmsSimulatorModal: React.FC<SmsSimulatorModalProps> = ({
                 : 'text-slate-500 hover:text-slate-900'
             }`}
           >
-            Basic Phone SMS (160 Chars)
+            {t?.basicSms || "Basic Phone SMS (160 Chars)"}
           </button>
           <button
             onClick={() => setTab('whatsapp')}
@@ -67,7 +70,7 @@ export const SmsSimulatorModal: React.FC<SmsSimulatorModalProps> = ({
                 : 'text-slate-500 hover:text-slate-900'
             }`}
           >
-            WhatsApp Card
+            {t?.whatsAppCard || "WhatsApp Card"}
           </button>
         </div>
 

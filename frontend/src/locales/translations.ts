@@ -1,189 +1,500 @@
 export interface Translations {
   appTitle: string;
   tagline: string;
-  step1: string;
-  step1Desc: string;
-  step2: string;
-  step2Desc: string;
-  step3: string;
-  step3Desc: string;
-  soilType: string;
-  waterSource: string;
-  fieldSize: string;
-  budget: string;
-  priorities: string;
-  saveWater: string;
-  improveSoil: string;
-  maximizeIncome: string;
-  reduceRisk: string;
+  brandName: string;
+  adssVersion: string;
+  liveSatApi: string;
+  exportDossier: string;
+  whatsappSms: string;
+  printSheet: string;
+  resetBaseline: string;
+  simulatedStressAlert: string;
+  engineNotice: string;
+  dataProvenance: string;
+  coordsStandard: string;
+  ingestingNasa: string;
   calculateButton: string;
   calculating: string;
-  resultsTitle: string;
-  rank: string;
-  score: string;
-  whyThisRotation: string;
-  waterNeed: string;
-  nasaRainfall: string;
-  soilImpact: string;
-  riskAlert: string;
-  viewSms: string;
-  printAdvisory: string;
-  stressTestTitle: string;
-  stressTestDesc: string;
-  rainReduction: string;
-  tempIncrease: string;
-  nasaDataBadge: string;
-  resetLocation: string;
+  verifiedRotations: string;
+  sequencesCount: string;
+  evaluatedIn: string;
+  
+  // Telemetry Ribbon
+  annualPrecip: string;
+  heatStressDays: string;
+  rootZoneMoisture: string;
+  soilChemistry: string;
+  anomalyVsAvg: string;
+  days: string;
+  volumetric: string;
+  smapActive: string;
+
+  // Map Picker
+  fieldCoordinates: string;
+  gpsButton: string;
+  smapResolution: string;
+  presets: string;
+
+  // Farm Profile (FarmerWizard)
+  soilWaterProfile: string;
+  fieldParameters: string;
+  soilTextureHorizon: string;
+  clayVertisol: string;
+  siltyLoam: string;
+  sandyAridisol: string;
+  autoDetect: string;
+  irrigationCapacity: string;
+  rainfed: string;
+  borewell: string;
+  canalNetwork: string;
+  precisionDrip: string;
+  fieldSize: string;
+  priorCrop: string;
+  fallowNone: string;
+  budgetCap: string;
+  low: string;
+  medium: string;
+  high: string;
+
+  // Priorities (PrioritySliders)
+  strategicWeights: string;
+  drought: string;
+  soil: string;
+  income: string;
+  waterConservation: string;
+  soilOrganicMatter: string;
+  smallholderCashFlow: string;
+  climateRiskBuffer: string;
+
+  // Climate Simulator (ClimateShockSlider)
+  climateStressSimulator: string;
+  simulationActive: string;
+  coupledSmapPower: string;
+  rainfallAnomaly: string;
+  temperatureOffset: string;
+  vsBaseline: string;
+  applyStress: string;
+
+  // Recommendation Card
+  topRecommendation: string;
+  rankPrefix: string;
+  rotationSequence: string;
+  resilience: string;
+  season: string;
+  waterReq: string;
+  biologicalNFixer: string;
+  waterFit: string;
+  soilRegeneration: string;
+  climateBuffer: string;
+  incomeFit: string;
+  nasaInsight: string;
+  waterConserved: string;
+  showLedger: string;
+  hideLedger: string;
+  cycleTotal: string;
+  nitrogenBalance: string;
+  climateRiskNotice: string;
+
+  // Low Tech Modal
+  lowTechTitle: string;
+  cheapestDeviceFirst: string;
+  basicSms: string;
+  whatsAppCard: string;
+  copyText: string;
+  copied: string;
 }
 
 export const translations: Record<string, Translations> = {
   en: {
     appTitle: "NASA Crop Rotation Advisor",
     tagline: "Climate-resilient rotation plans powered by NASA Earth observations & local soil data",
-    step1: "1. Select Field Location",
-    step1Desc: "Drop a pin on your field or select a benchmark pilot region.",
-    step2: "2. Farm Characteristics",
-    step2Desc: "Tell us about your soil, water access, and field constraints.",
-    step3: "3. Farmer Priorities",
-    step3Desc: "Adjust what matters most for your farming strategy.",
-    soilType: "Soil Type",
-    waterSource: "Water Availability",
-    fieldSize: "Field Size (Hectares)",
-    budget: "Investment Budget",
-    priorities: "Strategic Priorities",
-    saveWater: "Save Water",
-    improveSoil: "Improve Soil",
-    maximizeIncome: "Maximize Income",
-    reduceRisk: "Reduce Risk",
-    calculateButton: "Generate Resilient Rotations",
-    calculating: "Analyzing NASA Earth Observations...",
-    resultsTitle: "Recommended 3-Season Rotations",
-    rank: "Recommendation",
-    score: "Resilience Score",
-    whyThisRotation: "Agronomic Justification",
-    waterNeed: "Total Water Demand",
-    nasaRainfall: "NASA Annual Rainfall",
-    soilImpact: "Soil Nitrogen Impact",
-    riskAlert: "Climate Risk Warning",
-    viewSms: "SMS / WhatsApp Preview",
-    printAdvisory: "Print 1-Page Advisory",
-    stressTestTitle: "Simulate Climate Stress",
-    stressTestDesc: "Stress-test rotation viability under extreme climate conditions.",
-    rainReduction: "Rainfall Reduction",
-    tempIncrease: "Temperature Increase",
-    nasaDataBadge: "Live Satellite Data",
-    resetLocation: "Reset"
+    brandName: "AgroSphere EO",
+    adssVersion: "NASA ADSS v4.2",
+    liveSatApi: "SMAP & POWER Live",
+    exportDossier: "Export Dossier",
+    whatsappSms: "SMS / WhatsApp",
+    printSheet: "Print Sheet",
+    resetBaseline: "Reset Baseline",
+    simulatedStressAlert: "Simulated Climate Stress Active: Recalibrated for {pct}% rainfall anomaly and +{temp}°C heat offset.",
+    engineNotice: "Advisory Engine Notice",
+    dataProvenance: "NASA Goddard Institute & SMAP Mission Telemetry v4.2",
+    coordsStandard: "WGS84 Lat/Lon Coordinates · ISO 8601",
+    ingestingNasa: "Ingesting NASA Earth Observations...",
+    calculateButton: "Calculate Climate-Smart Rotations",
+    calculating: "Evaluating NASA Earth Observations...",
+    verifiedRotations: "Verified Climate-Smart Rotations",
+    sequencesCount: "Sequences",
+    evaluatedIn: "Evaluated in {ms} ms • Optimized for {soil}",
+    
+    annualPrecip: "Annual Precipitation",
+    heatStressDays: "Heat Stress Days (>35°C)",
+    rootZoneMoisture: "Root-Zone Moisture",
+    soilChemistry: "Soil Chemistry & Horizon",
+    anomalyVsAvg: "anomaly vs 5-yr avg",
+    days: "Days",
+    volumetric: "Volumetric",
+    smapActive: "SMAP L4 Active",
+
+    fieldCoordinates: "Field Parcel Coordinates",
+    gpsButton: "GPS",
+    smapResolution: "SMAP Downscaled 1km",
+    presets: "Presets:",
+
+    soilWaterProfile: "Soil & Water Profile",
+    fieldParameters: "Field Parameters",
+    soilTextureHorizon: "Soil Texture Horizon",
+    clayVertisol: "Vertisol (Clay)",
+    siltyLoam: "Silty Loam",
+    sandyAridisol: "Sandy Aridisol",
+    autoDetect: "Auto (SMAP)",
+    irrigationCapacity: "Irrigation Capacity",
+    rainfed: "Rainfed",
+    borewell: "Borewell",
+    canalNetwork: "Canal Network",
+    precisionDrip: "Precision Drip",
+    fieldSize: "Field Size",
+    priorCrop: "Prior Crop",
+    fallowNone: "Fallow / None",
+    budgetCap: "Budget Cap",
+    low: "Low",
+    medium: "Medium",
+    high: "High",
+
+    strategicWeights: "Strategic Optimization Weights",
+    drought: "Drought",
+    soil: "Soil",
+    income: "Income",
+    waterConservation: "Water Conservation",
+    soilOrganicMatter: "Soil Health & Nitrogen",
+    smallholderCashFlow: "Smallholder Cash Flow",
+    climateRiskBuffer: "Climate Risk Buffer",
+
+    climateStressSimulator: "Climate Stress Simulator",
+    simulationActive: "Simulation Active",
+    coupledSmapPower: "Coupled SMAP-POWER",
+    rainfallAnomaly: "Rainfall Anomaly",
+    temperatureOffset: "Temperature Offset",
+    vsBaseline: "vs baseline",
+    applyStress: "Apply Stress Model",
+
+    topRecommendation: "Rank #1 · Top Recommendation",
+    rankPrefix: "Rank",
+    rotationSequence: "Rotation",
+    resilience: "Resilience",
+    season: "Season",
+    waterReq: "Water Req:",
+    biologicalNFixer: "🌱 Biological N-Fixer",
+    waterFit: "Water Fit",
+    soilRegeneration: "Soil Regeneration",
+    climateBuffer: "Climate Buffer",
+    incomeFit: "Income Fit",
+    nasaInsight: "NASA Earth Observation Insight:",
+    waterConserved: "water conserved vs standard monoculture",
+    showLedger: "Show Agronomic Ledger",
+    hideLedger: "Hide Agronomic Ledger",
+    cycleTotal: "Total Cycle Water",
+    nitrogenBalance: "Estimated Biological Nitrogen Balance",
+    climateRiskNotice: "Climate Risk Notice",
+
+    lowTechTitle: "Low-Tech Channel Simulation",
+    cheapestDeviceFirst: "Design Principle: Cheapest Device First",
+    basicSms: "Basic Phone SMS (160 Chars)",
+    whatsAppCard: "WhatsApp Card",
+    copyText: "Copy",
+    copied: "Copied!"
   },
   hi: {
-    appTitle: "नासा फसल चक्र सलाहकार (NASA Crop Advisor)",
+    appTitle: "नासा फसल चक्र सलाहकार",
     tagline: "नासा उपग्रह डेटा और मिट्टी विज्ञान द्वारा संचालित टिकाऊ फसल चक्र",
-    step1: "1. खेत का स्थान चुनें",
-    step1Desc: "नक्शे पर अपने खेत का स्थान चुनें या नमूना क्षेत्र चुनें।",
-    step2: "2. खेत की जानकारी",
-    step2Desc: "मिट्टी का प्रकार, पानी की सुविधा और आकार बताएं।",
-    step3: "3. किसान की प्राथमिकताएं",
-    step3Desc: "तय करें कि आपके लिए सबसे महत्वपूर्ण क्या है।",
-    soilType: "मिट्टी का प्रकार",
-    waterSource: "पानी का साधन",
-    fieldSize: "खेत का आकार (हेक्टेयर)",
-    budget: "लागत / बजट",
-    priorities: "आपकी प्राथमिकताएं",
-    saveWater: "पानी बचाएं",
-    improveSoil: "मिट्टी सुधारें",
-    maximizeIncome: "अधिक आय",
-    reduceRisk: "जोखिम कम करें",
-    calculateButton: "सर्वश्रेष्ठ फसल चक्र खोजें",
-    calculating: "नासा उपग्रह डेटा का विश्लेषण हो रहा है...",
-    resultsTitle: "अनुशंसित 3-सीजन फसल चक्र",
-    rank: "सुझाव",
-    score: "अनुकूलता स्कोर",
-    whyThisRotation: "कृषि वैज्ञानिक कारण",
-    waterNeed: "कुल पानी की आवश्यकता",
-    nasaRainfall: "नासा वार्षिक वर्षा",
-    soilImpact: "मिट्टी नाइट्रोजन प्रभाव",
-    riskAlert: "मौसम जोखिम चेतावनी",
-    viewSms: "एसएमएस / व्हाट्सएप देखें",
-    printAdvisory: "रिपोर्ट प्रिंट करें",
-    stressTestTitle: "जलवायु परिवर्तन सिमुलेशन",
-    stressTestDesc: "अत्यधिक सूखे या गर्मी में फसल चक्र की मजबूती परखें।",
-    rainReduction: "बारिश में कमी",
-    tempIncrease: "तापमान में वृद्धि",
-    nasaDataBadge: "नासा लाइव डेटा",
-    resetLocation: "रीसेट"
+    brandName: "एग्रोस्फीयर ईओ (AgroSphere)",
+    adssVersion: "नासा एडीएसएस v4.2",
+    liveSatApi: "उपग्रह लाइव डेटा सक्रिय",
+    exportDossier: "रिपोर्ट डाउनलोड करें",
+    whatsappSms: "व्हाट्सएप / एसएमएस",
+    printSheet: "प्रिंट शीट",
+    resetBaseline: "रीसेट करें",
+    simulatedStressAlert: "जलवायु तनाव सिमुलेशन सक्रिय: {pct}% वर्षा बदलाव और +{temp}°C तापमान के लिए पुनर्गणना।",
+    engineNotice: "सलाहकार इंजन सूचना",
+    dataProvenance: "नासा गोडार्ड संस्थान एवं SMAP मिशन टेलीमेट्री v4.2",
+    coordsStandard: "WGS84 अक्षांश/देशांतर · ISO 8601",
+    ingestingNasa: "नासा उपग्रह डेटा प्राप्त हो रहा है...",
+    calculateButton: "जलवायु-स्मार्ट फसल चक्र खोजें",
+    calculating: "नासा उपग्रह डेटा का मूल्यांकन हो रहा है...",
+    verifiedRotations: "सत्यापित जलवायु-स्मार्ट फसल चक्र",
+    sequencesCount: "अनुक्रम",
+    evaluatedIn: "{ms} मिलीसेकंड में विश्लेषित • {soil} के लिए अनुकूलित",
+    
+    annualPrecip: "वार्षिक वर्षा",
+    heatStressDays: "अत्यधिक गर्मी के दिन (>35°C)",
+    rootZoneMoisture: "जड़-क्षेत्र की नमी",
+    soilChemistry: "मिट्टी रसायन व संरचना",
+    anomalyVsAvg: "5-वर्षीय औसत से अंतर",
+    days: "दिन",
+    volumetric: "मात्रात्मक",
+    smapActive: "SMAP L4 सक्रिय",
+
+    fieldCoordinates: "खेत के निर्देशांक",
+    gpsButton: "जीपीएस",
+    smapResolution: "SMAP 1 किमी डाउनस्केल्ड",
+    presets: "पूर्वनिर्धारित क्षेत्र:",
+
+    soilWaterProfile: "मिट्टी और जल प्रबंधन",
+    fieldParameters: "खेत के पैरामीटर",
+    soilTextureHorizon: "मिट्टी की बनावट",
+    clayVertisol: "काली मिट्टी (वर्टिसोल)",
+    siltyLoam: "दोमट मिट्टी (लोम)",
+    sandyAridisol: "बलुई मिट्टी (रेतीली)",
+    autoDetect: "स्वतः पहचान (SMAP)",
+    irrigationCapacity: "सिंचाई क्षमता",
+    rainfed: "वर्षाधीन (बारिश)",
+    borewell: "नलकूप / बोरवेल",
+    canalNetwork: "नहर नेटवर्क",
+    precisionDrip: "ड्रिप सिंचाई",
+    fieldSize: "खेत का आकार",
+    priorCrop: "पिछली फसल",
+    fallowNone: "परती / कोई नहीं",
+    budgetCap: "लागत सीमा",
+    low: "कम",
+    medium: "मध्यम",
+    high: "उच्च",
+
+    strategicWeights: "रणनीतिक प्राथमिकताएं",
+    drought: "सूखा",
+    soil: "मिट्टी",
+    income: "आय",
+    waterConservation: "जल संरक्षण",
+    soilOrganicMatter: "मिट्टी स्वास्थ्य एवं नाइट्रोजन",
+    smallholderCashFlow: "किसान नकदी प्रवाह",
+    climateRiskBuffer: "जलवायु जोखिम सुरक्षा",
+
+    climateStressSimulator: "जलवायु तनाव सिम्युलेटर",
+    simulationActive: "सिमुलेशन सक्रिय",
+    coupledSmapPower: "SMAP-POWER संयुक्त",
+    rainfallAnomaly: "वर्षा में परिवर्तन",
+    temperatureOffset: "तापमान वृद्धि",
+    vsBaseline: "सामान्य से",
+    applyStress: "तनाव मॉडल लागू करें",
+
+    topRecommendation: "स्थान #1 · सर्वश्रेष्ठ अनुशंसा",
+    rankPrefix: "स्थान",
+    rotationSequence: "फसल चक्र",
+    resilience: "अनुकूलता",
+    season: "मौसम",
+    waterReq: "जल आवश्यकता:",
+    biologicalNFixer: "🌱 जैविक नाइट्रोजन संचयक",
+    waterFit: "जल उपयुक्तता",
+    soilRegeneration: "मिट्टी सुधार",
+    climateBuffer: "जलवायु सुरक्षा",
+    incomeFit: "आय उपयुक्तता",
+    nasaInsight: "नासा उपग्रह विश्लेषण:",
+    waterConserved: "सामान्य खेती की तुलना में जल बचत",
+    showLedger: "विस्तृत कृषि बहीखाता देखें",
+    hideLedger: "कृषि बहीखाता छुपाएं",
+    cycleTotal: "कुल चक्र जल",
+    nitrogenBalance: "अनुमानित जैविक नाइट्रोजन संतुलन",
+    climateRiskNotice: "मौसम जोखिम चेतावनी",
+
+    lowTechTitle: "सरल फोन चैनल सिमुलेशन",
+    cheapestDeviceFirst: "डिजाइन सिद्धांत: सबसे सरल उपकरण पहले",
+    basicSms: "सामान्य फोन एसएमएस (160 अक्षर)",
+    whatsAppCard: "व्हाट्सएप कार्ड",
+    copyText: "कॉपी करें",
+    copied: "कॉपी हो गया!"
   },
   sw: {
-    appTitle: "Mshauri wa Mzunguko wa Mazao (NASA)",
-    tagline: "Mipango ya kilimo inayostahimili mabadiliko ya tabianchi kwa kutumia setilaiti za NASA",
-    step1: "1. Chagua Shamba Lako",
-    step1Desc: "Weka alama kwenye ramani au chagua eneo la majaribio.",
-    step2: "2. Hali ya Shamba",
-    step2Desc: "Eleza aina ya udongo, upatikanaji wa maji, na ukubwa wa shamba.",
-    step3: "3. Vipaumbele vya Mkulima",
-    step3Desc: "Chagua mikakati muhimu zaidi kwako msimu huu.",
-    soilType: "Aina ya Udongo",
-    waterSource: "Upatikanaji wa Maji",
-    fieldSize: "Ukubwa wa Shamba (Hekta)",
-    budget: "Bajeti ya Gharama",
-    priorities: "Vipaumbele",
-    saveWater: "Hifadhi Maji",
-    improveSoil: "Boresha Udongo",
-    maximizeIncome: "Mapato Zaidi",
-    reduceRisk: "Punguza Hatari",
+    appTitle: "Mshauri wa Mzunguko wa Mazao NASA",
+    tagline: "Mipango ya kilimo inayostahimili mabadiliko ya tabianchi kwa kutumia satelaiti za NASA",
+    brandName: "AgroSphere EO",
+    adssVersion: "NASA ADSS v4.2",
+    liveSatApi: "Data ya Moja kwa Moja ya SMAP & POWER",
+    exportDossier: "Pakua Ripoti ya Ushauri",
+    whatsappSms: "SMS / WhatsApp",
+    printSheet: "Chapisha Karatasi",
+    resetBaseline: "Weka Upya",
+    simulatedStressAlert: "Uigaji wa Mabadiliko ya Tabianchi Umewashwa: Imehesabiwa kwa {pct}% upungufu wa mvua na +{temp}°C joto.",
+    engineNotice: "Taarifa ya Injini ya Ushauri",
+    dataProvenance: "Taasisi ya Goddard ya NASA & Telemetri ya SMAP v4.2",
+    coordsStandard: "Kuratibu za WGS84 Lat/Lon · ISO 8601",
+    ingestingNasa: "Inapokea Data ya Anga ya NASA...",
     calculateButton: "Tafuta Mzunguko Bora wa Mazao",
-    calculating: "Inachakata data ya satelaiti ya NASA...",
-    resultsTitle: "Mizunguko 3 Iliyopendekezwa",
-    rank: "Pendekezo",
-    score: "Alama ya Ustahimilivu",
-    whyThisRotation: "Sababu ya Kitaalamu ya Kilimo",
-    waterNeed: "Mahitaji ya Maji",
-    nasaRainfall: "Mvua ya Mwaka (NASA)",
-    soilImpact: "Naitrojeni ya Udongo",
-    riskAlert: "Onyo la Hatari ya Hali ya Hewa",
-    viewSms: "Hakiki SMS / WhatsApp",
-    printAdvisory: "Chapisha Ripoti",
-    stressTestTitle: "Uigaji wa Mabadiliko ya Hali ya Hewa",
-    stressTestDesc: "Pima jinsi mazao yatakavyostahimili ukame mkali.",
-    rainReduction: "Kupungua kwa Mvua",
-    tempIncrease: "Kupanda kwa Joto",
-    nasaDataBadge: "Data ya Moja kwa Moja ya NASA",
-    resetLocation: "Weka Upya"
+    calculating: "Inachambua Data ya Satelaiti za NASA...",
+    verifiedRotations: "Mizunguko ya Mazao Iliyothibitishwa",
+    sequencesCount: "Mifuatano",
+    evaluatedIn: "Imehesabiwa kwa ms {ms} • Imerekebishwa kwa {soil}",
+    
+    annualPrecip: "Mvua ya Mwaka",
+    heatStressDays: "Siku za Joto Kali (>35°C)",
+    rootZoneMoisture: "Unyevunyevu wa Mizizi",
+    soilChemistry: "Kemia na Aina ya Udongo",
+    anomalyVsAvg: "tofauti na wastani wa miaka 5",
+    days: "Siku",
+    volumetric: "Kiasi",
+    smapActive: "SMAP L4 Inafanya Kazi",
+
+    fieldCoordinates: "Vipimo vya Eneo la Shamba",
+    gpsButton: "GPS",
+    smapResolution: "SMAP 1km ya Usahihi",
+    presets: "Maeneo ya Majaribio:",
+
+    soilWaterProfile: "Wasifu wa Udongo na Maji",
+    fieldParameters: "Vipimo vya Shamba",
+    soilTextureHorizon: "Aina ya Udongo",
+    clayVertisol: "Udongo wa Mfinyanzi (Vertisol)",
+    siltyLoam: "Udongo wa Kichanga-Mfinyanzi",
+    sandyAridisol: "Udongo wa Kichanga (Sandy)",
+    autoDetect: "Tambua Kiotomatiki (SMAP)",
+    irrigationCapacity: "Uwezo wa Umwagiliaji",
+    rainfed: "Maji ya Mvua Tu",
+    borewell: "Kisima cha Kisasa (Borewell)",
+    canalNetwork: "Mfereji wa Umwagiliaji",
+    precisionDrip: "Umwagiliaji wa Matone (Drip)",
+    fieldSize: "Ukubwa wa Shamba",
+    priorCrop: "Zao Lililopita",
+    fallowNone: "Bila Mazao / Hakuna",
+    budgetCap: "Kiwango cha Bajeti",
+    low: "Chini",
+    medium: "Kati",
+    high: "Juu",
+
+    strategicWeights: "Uzito wa Mikakati ya Kilimo",
+    drought: "Ukame",
+    soil: "Udongo",
+    income: "Mapato",
+    waterConservation: "Uhifadhi wa Maji",
+    soilOrganicMatter: "Afya ya Udongo na Naitrojeni",
+    smallholderCashFlow: "Mapato ya Mkulima",
+    climateRiskBuffer: "Kizuizi cha Hatari ya Hewa",
+
+    climateStressSimulator: "Kielelezo cha Mkazo wa Tabianchi",
+    simulationActive: "Uigaji Umewashwa",
+    coupledSmapPower: "SMAP-POWER Pamoja",
+    rainfallAnomaly: "Mabadiliko ya Mvua",
+    temperatureOffset: "Ongezeko la Joto",
+    vsBaseline: "kulinganisha na kawaida",
+    applyStress: "Tumia Mfano wa Mkazo",
+
+    topRecommendation: "Nafasi ya 1 · Pendekezo Kuu",
+    rankPrefix: "Nafasi",
+    rotationSequence: "Mzunguko",
+    resilience: "Ustahimilivu",
+    season: "Msimu",
+    waterReq: "Maji Yanayohitajika:",
+    biologicalNFixer: "🌱 Zao Linaloongeza Naitrojeni",
+    waterFit: "Kutosheleza Maji",
+    soilRegeneration: "Kutengeneza Udongo",
+    climateBuffer: "Ustahimilivu wa Hewa",
+    incomeFit: "Upatikanaji wa Mapato",
+    nasaInsight: "Uchambuzi wa Satelaiti za NASA:",
+    waterConserved: "maji yaliyookolewa kulinganisha na zao moja",
+    showLedger: "Onyesha Maelezo Kamili ya Kilimo",
+    hideLedger: "Ficha Maelezo ya Kilimo",
+    cycleTotal: "Jumla ya Maji ya Mzunguko",
+    nitrogenBalance: "Kadirio la Naitrojeni ya Asili",
+    climateRiskNotice: "Tahadhari ya Hatari ya Hewa",
+
+    lowTechTitle: "Uigaji wa Mawasiliano Rahisi",
+    cheapestDeviceFirst: "Kanuni ya Muundo: Kifaa Rahisi Zaidi Kwanza",
+    basicSms: "SMS ya Simu ya Kawaida (Herufi 160)",
+    whatsAppCard: "Kadi ya WhatsApp",
+    copyText: "Nakili",
+    copied: "Imenakiliwa!"
   },
   es: {
     appTitle: "Asesor de Rotación de Cultivos NASA",
     tagline: "Planes de rotación resilientes con datos satelitales de la NASA y agronomía local",
-    step1: "1. Seleccione la Ubicación",
-    step1Desc: "Coloque un marcador en su campo o elija una región piloto.",
-    step2: "2. Características de la Finca",
-    step2Desc: "Indique su tipo de suelo, acceso al agua y tamaño del campo.",
-    step3: "3. Prioridades del Productor",
-    step3Desc: "Ajuste sus objetivos agronómicos principales.",
-    soilType: "Tipo de Suelo",
-    waterSource: "Disponibilidad de Agua",
-    fieldSize: "Tamaño (Hectáreas)",
-    budget: "Presupuesto",
-    priorities: "Prioridades",
-    saveWater: "Ahorrar Agua",
-    improveSoil: "Mejorar el Suelo",
-    maximizeIncome: "Maximizar Ingresos",
-    reduceRisk: "Reducir Riesgo",
-    calculateButton: "Generar Rotaciones Resilientes",
-    calculating: "Consultando observaciones de la NASA...",
-    resultsTitle: "Rotaciones Recomendadas (3 Temporadas)",
-    rank: "Recomendación",
-    score: "Puntaje de Resiliencia",
-    whyThisRotation: "Justificación Agronómica",
-    waterNeed: "Demanda Hídrica Total",
-    nasaRainfall: "Lluvia Anual (NASA)",
-    soilImpact: "Balance de Nitrógeno",
-    riskAlert: "Alerta de Riesgo Climático",
-    viewSms: "Vista SMS / WhatsApp",
-    printAdvisory: "Imprimir Informe",
-    stressTestTitle: "Simular Estrés Climático",
-    stressTestDesc: "Pruebe la viabilidad del cultivo ante sequías o aumento de temperatura.",
-    rainReduction: "Reducción de Lluvias",
-    tempIncrease: "Aumento de Temperatura",
-    nasaDataBadge: "Datos Satelitales NASA",
-    resetLocation: "Restablecer"
+    brandName: "AgroSphere EO",
+    adssVersion: "NASA ADSS v4.2",
+    liveSatApi: "Datos en Vivo SMAP & POWER",
+    exportDossier: "Exportar Informe",
+    whatsappSms: "SMS / WhatsApp",
+    printSheet: "Imprimir Hoja",
+    resetBaseline: "Restablecer",
+    simulatedStressAlert: "Simulación de Estrés Climático Activa: Recalibrado para anomalía de {pct}% en lluvias y +{temp}°C de temperatura.",
+    engineNotice: "Aviso del Motor Asesor",
+    dataProvenance: "Instituto Goddard de la NASA y Telemetría SMAP v4.2",
+    coordsStandard: "Coordenadas WGS84 Lat/Lon · ISO 8601",
+    ingestingNasa: "Obteniendo Observaciones Satelitales NASA...",
+    calculateButton: "Calcular Rotaciones Climáticamente Inteligentes",
+    calculating: "Evaluando Observaciones de la NASA...",
+    verifiedRotations: "Rotaciones Climáticamente Inteligentes Verificadas",
+    sequencesCount: "Secuencias",
+    evaluatedIn: "Evaluado en {ms} ms • Optimizado para {soil}",
+    
+    annualPrecip: "Precipitación Anual",
+    heatStressDays: "Días de Calor Extremo (>35°C)",
+    rootZoneMoisture: "Humedad en Zona Radicular",
+    soilChemistry: "Química y Textura del Suelo",
+    anomalyVsAvg: "anomalía vs promedio 5 años",
+    days: "Días",
+    volumetric: "Volumétrico",
+    smapActive: "SMAP L4 Activo",
+
+    fieldCoordinates: "Coordenadas de la Parcela",
+    gpsButton: "GPS",
+    smapResolution: "SMAP 1km Reducido",
+    presets: "Regiones Piloto:",
+
+    soilWaterProfile: "Perfil de Suelo y Agua",
+    fieldParameters: "Parámetros del Campo",
+    soilTextureHorizon: "Textura del Suelo",
+    clayVertisol: "Vertisol (Arcilloso)",
+    siltyLoam: "Franco Limoso",
+    sandyAridisol: "Arenoso (Aridisol)",
+    autoDetect: "Autodetectar (SMAP)",
+    irrigationCapacity: "Capacidad de Riego",
+    rainfed: "Secano (Lluvia)",
+    borewell: "Pozo / Aguas Subterráneas",
+    canalNetwork: "Red de Canales",
+    precisionDrip: "Riego por Goteo",
+    fieldSize: "Tamaño del Campo",
+    priorCrop: "Cultivo Anterior",
+    fallowNone: "Barbecho / Ninguno",
+    budgetCap: "Presupuesto",
+    low: "Bajo",
+    medium: "Medio",
+    high: "Alto",
+
+    strategicWeights: "Ponderaciones Estratégicas",
+    drought: "Sequía",
+    soil: "Suelo",
+    income: "Ingresos",
+    waterConservation: "Conservación del Agua",
+    soilOrganicMatter: "Salud del Suelo y Nitrógeno",
+    smallholderCashFlow: "Flujo de Caja",
+    climateRiskBuffer: "Buffer de Riesgo Climático",
+
+    climateStressSimulator: "Simulador de Estrés Climático",
+    simulationActive: "Simulación Activa",
+    coupledSmapPower: "Acoplado SMAP-POWER",
+    rainfallAnomaly: "Anomalía de Precipitación",
+    temperatureOffset: "Incremento Térmico",
+    vsBaseline: "vs línea base",
+    applyStress: "Aplicar Modelo de Estrés",
+
+    topRecommendation: "Rango #1 · Recomendación Principal",
+    rankPrefix: "Rango",
+    rotationSequence: "Rotación",
+    resilience: "Resiliencia",
+    season: "Temporada",
+    waterReq: "Demanda de Agua:",
+    biologicalNFixer: "🌱 Fijador Biológico de N",
+    waterFit: "Ajuste Hídrico",
+    soilRegeneration: "Regeneración del Suelo",
+    climateBuffer: "Buffer Climático",
+    incomeFit: "Ajuste Económico",
+    nasaInsight: "Perspectiva de Observación Satelital NASA:",
+    waterConserved: "agua ahorrada vs monocultivo convencional",
+    showLedger: "Mostrar Balance Agronómico",
+    hideLedger: "Ocultar Balance Agronómico",
+    cycleTotal: "Agua Total del Ciclo",
+    nitrogenBalance: "Balance Estimado de Nitrógeno Biológico",
+    climateRiskNotice: "Aviso de Riesgo Climático",
+
+    lowTechTitle: "Simulación de Canal de Baja Tecnología",
+    cheapestDeviceFirst: "Principio de Diseño: El Dispositivo Más Accesible Primero",
+    basicSms: "SMS de Teléfono Básico (160 Caracteres)",
+    whatsAppCard: "Tarjeta de WhatsApp",
+    copyText: "Copiar",
+    copied: "¡Copiado!"
   }
 };
-

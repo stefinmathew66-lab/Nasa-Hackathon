@@ -26,10 +26,11 @@ class ScoringEngine:
 
     def _get_crop_summary(self, crop: Dict[str, Any], lang: str = "en") -> CropSummary:
         local_name = crop.get("local_names", {}).get(lang)
+        display_name = local_name if (local_name and lang != "en") else crop["name"]
         return CropSummary(
             id=crop["id"],
-            name=crop["name"],
-            local_name=local_name,
+            name=display_name,
+            local_name=local_name or crop["name"],
             category=crop["category"],
             botanical_family=crop["botanical_family"],
             season=crop["season"],
@@ -222,38 +223,109 @@ class ScoringEngine:
         )
 
         rating = "green" if overall_score >= 70.0 else ("yellow" if overall_score >= 45.0 else "red")
+        lang = constraints.language or "en"
 
         # EXPLAINABILITY AND RISK WARNINGS
         drivers = []
         warnings = []
 
         if legumes_count >= 1:
-            legume_names = [c["name"].split(" ")[0] for c in (c1, c2, c3) if c["nitrogen_fixing"]]
-            drivers.append(f"Biological nitrogen fixation from {', '.join(legume_names)} rebuilds topsoil fertility without synthetic chemical costs.")
+            legume_names = [(c.get("local_names", {}).get(lang) if lang != "en" and c.get("local_names", {}).get(lang) else c["name"].split(" ")[0]) for c in (c1, c2, c3) if c["nitrogen_fixing"]]
+            leg_str = ', '.join([n for n in legume_names if n])
+            if lang == "hi":
+                drivers.append(f"{leg_str} से जैविक नाइट्रोजन स्थिरीकरण बिना रासायनिक खाद के मिट्टी की उर्वरता लौटाता है।")
+            elif lang == "sw":
+                drivers.append(f"Uongezaji wa naitrojeni ya asili kutoka {leg_str} unarutubisha udongo bila gharama za kemikali.")
+            elif lang == "es":
+                drivers.append(f"Fijación biológica de nitrógeno de {leg_str} reconstruye la fertilidad del suelo sin agroquímicos.")
+            else:
+                drivers.append(f"Biological nitrogen fixation from {leg_str} rebuilds topsoil fertility without synthetic chemical costs.")
+
         if water_score >= 80.0:
-            drivers.append(f"Balanced water demand ({total_water_demand}mm) stays safely within local NASA precipitation & irrigation capacity.")
+            if lang == "hi":
+                drivers.append(f"संतुलित जल मांग ({total_water_demand} मिमी) नासा वर्षा और स्थानीय सिंचाई क्षमता के पूर्णतः अनुकूल है।")
+            elif lang == "sw":
+                drivers.append(f"Mahitaji ya maji yaliyosawazishwa ({total_water_demand} mm) yanalingana vizuri na mvua ya NASA na uwezo wa umwagiliaji.")
+            elif lang == "es":
+                drivers.append(f"Demanda hídrica equilibrada ({total_water_demand} mm) dentro de la precipitación NASA y capacidad de riego.")
+            else:
+                drivers.append(f"Balanced water demand ({total_water_demand}mm) stays safely within local NASA precipitation & irrigation capacity.")
+
         if climate_score >= 80.0:
-            drivers.append(f"High drought/heat tolerance protects yields against observed NASA extreme heat days ({climate.heat_days_above_35c} days >35°C).")
+            if lang == "hi":
+                drivers.append(f"उच्च सूखा/गर्मी सहनशीलता नासा द्वारा दर्ज अत्यधिक गर्मी के दिनों ({climate.heat_days_above_35c} दिन >35°C) में पैदावार की रक्षा करती है।")
+            elif lang == "sw":
+                drivers.append(f"Ustahimilivu mkubwa wa ukame na joto unalinda mavuno dhidi ya siku za joto kali za NASA ({climate.heat_days_above_35c} siku >35°C).")
+            elif lang == "es":
+                drivers.append(f"Alta tolerancia a sequía y calor protege el rendimiento frente a días de calor extremo de NASA ({climate.heat_days_above_35c} días >35°C).")
+            else:
+                drivers.append(f"High drought/heat tolerance protects yields against observed NASA extreme heat days ({climate.heat_days_above_35c} days >35°C).")
 
         if not drivers:
-            drivers.append("Viable multi-season rotational cycle maintaining baseline agricultural productivity.")
+            if lang == "hi":
+                drivers.append("टिकाऊ बहु-फसली चक्र जो आधारभूत कृषि उत्पादकता बनाए रखता है।")
+            elif lang == "sw":
+                drivers.append("Mzunguko mzuri wa mazao unaodumisha uzalishaji wa kimsingi wa shamba.")
+            elif lang == "es":
+                drivers.append("Ciclo de rotación viable que mantiene la productividad agrícola de base.")
+            else:
+                drivers.append("Viable multi-season rotational cycle maintaining baseline agricultural productivity.")
 
         primary_driver = drivers[0]
 
         # Warnings
         if water_ratio < 0.85:
-            warnings.append(f"Water Deficit Risk: Total crop demand ({total_water_demand}mm) exceeds typical rainfall. Additional irrigation required.")
-        if c1["botanical_family"] == c2["botanical_family"] or c2["botanical_family"] == c3["botanical_family"]:
-            warnings.append("Pest/Disease Warning: Consecutive crops share the same botanical family, increasing pest carryover risk.")
-        if climate.heat_days_above_35c > 45 and (c1["heat_tolerance"] <= 2 or c2["heat_tolerance"] <= 2):
-            warnings.append(f"Heat Sensitivity: Local NASA records show {climate.heat_days_above_35c} days above 35°C, risking heat stress.")
-        if climate.rainfall_5yr_trend_pct < -10.0:
-            warnings.append(f"Declining Rainfall Alert: 5-year NASA trend indicates {abs(climate.rainfall_5yr_trend_pct)}% drop in precipitation.")
+            if lang == "hi":
+                warnings.append(f"जल संकट जोखिम: कुल फसल मांग ({total_water_demand} मिमी) सामान्य वर्षा से अधिक है। अतिरिक्त सिंचाई आवश्यक है।")
+            elif lang == "sw":
+                warnings.append(f"Hatari ya Upungufu wa Maji: Mahitaji ya maji ({total_water_demand} mm) yanazidi mvua ya kawaida. Umwagiliaji wa ziada unahitajika.")
+            elif lang == "es":
+                warnings.append(f"Riesgo de Déficit Hídrico: Demanda total ({total_water_demand} mm) supera la lluvia típica. Se requiere riego adicional.")
+            else:
+                warnings.append(f"Water Deficit Risk: Total crop demand ({total_water_demand}mm) exceeds typical rainfall. Additional irrigation required.")
 
-        # Soil & Water summaries
+        if c1["botanical_family"] == c2["botanical_family"] or c2["botanical_family"] == c3["botanical_family"]:
+            if lang == "hi":
+                warnings.append("कीट/रोग चेतावनी: लगातार फसलें एक ही वानस्पतिक परिवार की हैं, जिससे कीटों का खतरा बढ़ सकता है।")
+            elif lang == "sw":
+                warnings.append("Onyo la Wadudu/Magonjwa: Mazao ya mfululizo yanatoka jamii moja ya kibiolojia, na kuongeza hatari ya wadudu.")
+            elif lang == "es":
+                warnings.append("Alerta de Plagas/Enfermedades: Cultivos consecutivos comparten la misma familia botánica, aumentando el riesgo.")
+            else:
+                warnings.append("Pest/Disease Warning: Consecutive crops share the same botanical family, increasing pest carryover risk.")
+
+        if climate.heat_days_above_35c > 45 and (c1["heat_tolerance"] <= 2 or c2["heat_tolerance"] <= 2):
+            if lang == "hi":
+                warnings.append(f"गर्मी संवेदनशीलता: नासा रिकॉर्ड {climate.heat_days_above_35c} दिन >35°C दिखाते हैं, जिससे गर्मी का तनाव संभव है।")
+            elif lang == "sw":
+                warnings.append(f"Unyeti wa Joto: Rekodi za NASA zinaonyesha siku {climate.heat_days_above_35c} zaidi ya 35°C, hatari ya mkazo wa joto.")
+            elif lang == "es":
+                warnings.append(f"Sensibilidad al Calor: Registros NASA muestran {climate.heat_days_above_35c} días >35°C, riesgo de estrés térmico.")
+            else:
+                warnings.append(f"Heat Sensitivity: Local NASA records show {climate.heat_days_above_35c} days above 35°C, risking heat stress.")
+
+        if climate.rainfall_5yr_trend_pct < -10.0:
+            if lang == "hi":
+                warnings.append(f"गिरती वर्षा चेतावनी: 5-वर्षीय नासा रुझान वर्षा में {abs(climate.rainfall_5yr_trend_pct)}% की गिरावट दर्शाता है।")
+            elif lang == "sw":
+                warnings.append(f"Onyo la Mvua Kupungua: Mwenendo wa miaka 5 wa NASA unaonyesha kupungua kwa {abs(climate.rainfall_5yr_trend_pct)}% kwa mvua.")
+            elif lang == "es":
+                warnings.append(f"Alerta de Lluvias Decrecientes: Tendencia NASA de 5 años muestra caída del {abs(climate.rainfall_5yr_trend_pct)}% en precipitación.")
+            else:
+                warnings.append(f"Declining Rainfall Alert: 5-year NASA trend indicates {abs(climate.rainfall_5yr_trend_pct)}% drop in precipitation.")
+
+        # Soil & Water summaries & n_desc
         soil_summary = f"{legumes_count} legume phase(s) restoring soil nitrogen. Diversified {c1['root_depth']}/{c2['root_depth']}/{c3['root_depth']} root profile."
         water_summary = f"Total water need: {total_water_demand} mm. Water security index: {round(water_ratio * 100)}% of supply."
-        n_desc = f"+{legumes_count * 35} kg/ha estimated biological N balance" if legumes_count > 0 else "Neutral N balance (requires organic manure/fertilizer)"
+        
+        if lang == "hi":
+            n_desc = f"+{legumes_count * 35} किग्रा/हेक्टेयर अनुमानित जैविक नाइट्रोजन संतुलन" if legumes_count > 0 else "तटस्थ नाइट्रोजन संतुलन (जैविक खाद की आवश्यकता)"
+        elif lang == "sw":
+            n_desc = f"+{legumes_count * 35} kg/ha makadirio ya naitrojeni ya asili" if legumes_count > 0 else "Naitrojeni ya wastani (inahitaji mbolea ya samadi)"
+        elif lang == "es":
+            n_desc = f"+{legumes_count * 35} kg/ha balance estimado de nitrógeno biológico" if legumes_count > 0 else "Balance neutro de N (requiere abono orgánico)"
+        else:
+            n_desc = f"+{legumes_count * 35} kg/ha estimated biological N balance" if legumes_count > 0 else "Neutral N balance (requires organic manure/fertilizer)"
 
         rotation_id = f"{c1['id']}__{c2['id']}__{c3['id']}"
 
@@ -315,28 +387,86 @@ class ScoringEngine:
         c_names = " -> ".join([c.name.split(" ")[0] for c in top_plan.crops])
         warning_snippet = f" Alert: {top_plan.risk_warnings[0][:40]}" if top_plan.risk_warnings else ""
         
-        # 160-Character SMS format
-        sms = (
-            f"ADVISOR: Rec #{top_plan.rank} ({c_names}). Score:{int(top_plan.overall_score)}/100. "
-            f"Water:{top_plan.total_water_need_mm}mm.{warning_snippet}"
-        )[:160]
-
-        # WhatsApp Rich Card Format
-        wa = (
-            f"🌾 *NASA CROP ROTATION ADVISORY*\n"
-            f"📍 *Field Coordinates:* {location.lat:.2f}, {location.lon:.2f}\n"
-            f"📊 *Suitability Score:* {top_plan.overall_score}/100 ({top_plan.rating.upper()})\n\n"
-            f"🗓️ *Recommended 3-Season Rotation:*\n"
-            f"• Season 1: *{top_plan.crops[0].name}*\n"
-            f"• Season 2: *{top_plan.crops[1].name}*\n"
-            f"• Season 3: *{top_plan.crops[2].name}*\n\n"
-            f"💡 *Key Agronomic Benefit:*\n{top_plan.primary_driver}\n\n"
-            f"💧 *Total Water Need:* {top_plan.total_water_need_mm} mm (NASA rain: {climate.annual_rainfall_mm} mm)\n"
-            f"🌱 *Soil Impact:* {top_plan.nitrogen_balance_desc}\n"
-        )
-        if top_plan.risk_warnings:
-            wa += f"\n⚠️ *Risk Alert:* {top_plan.risk_warnings[0]}\n"
-        wa += "\n_Powered by NASA Earth Observations & FAO Agronomy Models_"
+        if lang == "hi":
+            sms = (
+                f"नासा सलाहकार: विकल्प #{top_plan.rank} ({c_names})। स्कोर:{int(top_plan.overall_score)}/100। "
+                f"जल मांग:{top_plan.total_water_need_mm}मिमी।{warning_snippet}"
+            )[:160]
+            wa = (
+                f"🌾 *नासा फसल चक्र सलाहकार (NASA Crop Advisor)*\n"
+                f"📍 *खेत निर्देशांक:* {location.lat:.2f}, {location.lon:.2f}\n"
+                f"📊 *अनुकूलता स्कोर:* {top_plan.overall_score}/100\n\n"
+                f"🗓️ *अनुशंसित 3-सीजन फसल चक्र:*\n"
+                f"• सीजन 1: *{top_plan.crops[0].name}*\n"
+                f"• सीजन 2: *{top_plan.crops[1].name}*\n"
+                f"• सीजन 3: *{top_plan.crops[2].name}*\n\n"
+                f"💡 *मुख्य कृषि लाभ:*\n{top_plan.primary_driver}\n\n"
+                f"💧 *कुल जल आवश्यकता:* {top_plan.total_water_need_mm} मिमी (नासा वर्षा: {climate.annual_rainfall_mm} मिमी)\n"
+                f"🌱 *मिट्टी प्रभाव:* {top_plan.nitrogen_balance_desc}\n"
+            )
+            if top_plan.risk_warnings:
+                wa += f"\n⚠️ *जोखिम चेतावनी:* {top_plan.risk_warnings[0]}\n"
+            wa += "\n_नासा उपग्रह डेटा एवं एफएओ कृषि मॉडल द्वारा संचालित_"
+        elif lang == "sw":
+            sms = (
+                f"USHAURI WA NASA: Pendekezo #{top_plan.rank} ({c_names}). Alama:{int(top_plan.overall_score)}/100. "
+                f"Maji:{top_plan.total_water_need_mm}mm.{warning_snippet}"
+            )[:160]
+            wa = (
+                f"🌾 *USHAURI WA MAZAO WA NASA*\n"
+                f"📍 *Vipimo vya Shamba:* {location.lat:.2f}, {location.lon:.2f}\n"
+                f"📊 *Alama ya Ustahimilivu:* {top_plan.overall_score}/100\n\n"
+                f"🗓️ *Mzunguko wa Misimu 3 Iliyopendekezwa:*\n"
+                f"• Msimu 1: *{top_plan.crops[0].name}*\n"
+                f"• Msimu 2: *{top_plan.crops[1].name}*\n"
+                f"• Msimu 3: *{top_plan.crops[2].name}*\n\n"
+                f"💡 *Faida Kuu ya Kilimo:*\n{top_plan.primary_driver}\n\n"
+                f"💧 *Jumla ya Mahitaji ya Maji:* {top_plan.total_water_need_mm} mm (Mvua ya NASA: {climate.annual_rainfall_mm} mm)\n"
+                f"🌱 *Athari kwa Udongo:* {top_plan.nitrogen_balance_desc}\n"
+            )
+            if top_plan.risk_warnings:
+                wa += f"\n⚠️ *Onyo la Hatari:* {top_plan.risk_warnings[0]}\n"
+            wa += "\n_Inaendeshwa na Data ya Setilaiti za NASA & FAO_"
+        elif lang == "es":
+            sms = (
+                f"ASESOR NASA: Rec #{top_plan.rank} ({c_names}). Puntaje:{int(top_plan.overall_score)}/100. "
+                f"Agua:{top_plan.total_water_need_mm}mm.{warning_snippet}"
+            )[:160]
+            wa = (
+                f"🌾 *ASESOR DE ROTACIÓN DE CULTIVOS NASA*\n"
+                f"📍 *Coordenadas:* {location.lat:.2f}, {location.lon:.2f}\n"
+                f"📊 *Puntaje de Resiliencia:* {top_plan.overall_score}/100\n\n"
+                f"🗓️ *Rotación Recomendada (3 Temporadas):*\n"
+                f"• Temporada 1: *{top_plan.crops[0].name}*\n"
+                f"• Temporada 2: *{top_plan.crops[1].name}*\n"
+                f"• Temporada 3: *{top_plan.crops[2].name}*\n\n"
+                f"💡 *Beneficio Agronómico Clave:*\n{top_plan.primary_driver}\n\n"
+                f"💧 *Demanda Hídrica Total:* {top_plan.total_water_need_mm} mm (Lluvia NASA: {climate.annual_rainfall_mm} mm)\n"
+                f"🌱 *Impacto en el Suelo:* {top_plan.nitrogen_balance_desc}\n"
+            )
+            if top_plan.risk_warnings:
+                wa += f"\n⚠️ *Alerta de Riesgo:* {top_plan.risk_warnings[0]}\n"
+            wa += "\n_Impulsado por Observaciones Satelitales NASA y Modelos FAO_"
+        else:
+            sms = (
+                f"ADVISOR: Rec #{top_plan.rank} ({c_names}). Score:{int(top_plan.overall_score)}/100. "
+                f"Water:{top_plan.total_water_need_mm}mm.{warning_snippet}"
+            )[:160]
+            wa = (
+                f"🌾 *NASA CROP ROTATION ADVISORY*\n"
+                f"📍 *Field Coordinates:* {location.lat:.2f}, {location.lon:.2f}\n"
+                f"📊 *Suitability Score:* {top_plan.overall_score}/100 ({top_plan.rating.upper()})\n\n"
+                f"🗓️ *Recommended 3-Season Rotation:*\n"
+                f"• Season 1: *{top_plan.crops[0].name}*\n"
+                f"• Season 2: *{top_plan.crops[1].name}*\n"
+                f"• Season 3: *{top_plan.crops[2].name}*\n\n"
+                f"💡 *Key Agronomic Benefit:*\n{top_plan.primary_driver}\n\n"
+                f"💧 *Total Water Need:* {top_plan.total_water_need_mm} mm (NASA rain: {climate.annual_rainfall_mm} mm)\n"
+                f"🌱 *Soil Impact:* {top_plan.nitrogen_balance_desc}\n"
+            )
+            if top_plan.risk_warnings:
+                wa += f"\n⚠️ *Risk Alert:* {top_plan.risk_warnings[0]}\n"
+            wa += "\n_Powered by NASA Earth Observations & FAO Agronomy Models_"
 
         return sms, wa
 

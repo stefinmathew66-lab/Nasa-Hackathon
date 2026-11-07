@@ -73,26 +73,12 @@ export const App: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [isSmsOpen, setIsSmsOpen] = useState<boolean>(false);
 
-  // Sync language with constraints
-  const handleLanguageChange = (lang: string) => {
-    setCurrentLang(lang);
-    setConstraints(prev => ({ ...prev, language: lang }));
-  };
-
-  // Location update handler
-  const handleLocationChange = (lat: number, lon: number, name?: string) => {
-    setLocation({
-      lat,
-      lon,
-      region_name: name || `Field (${lat.toFixed(2)}, ${lon.toFixed(2)})`
-    });
-  };
-
-  // Fetch recommendations from API
-  const fetchRecommendations = async () => {
+  // Fetch recommendations from API with explicit constraints override if provided
+  const fetchRecommendations = async (overrideConstraints?: FarmerConstraints) => {
     setIsLoading(true);
     setError(null);
     try {
+      const activeConstraints = overrideConstraints || constraints;
       const response = await fetch('/api/recommendations', {
         method: 'POST',
         headers: {
@@ -100,7 +86,7 @@ export const App: React.FC = () => {
         },
         body: JSON.stringify({
           location,
-          constraints,
+          constraints: activeConstraints,
           priorities,
           stress_scenario: stressScenario
         })
@@ -118,6 +104,23 @@ export const App: React.FC = () => {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  // Sync language with constraints and immediately trigger re-fetch in selected language
+  const handleLanguageChange = (lang: string) => {
+    setCurrentLang(lang);
+    const updatedConstraints = { ...constraints, language: lang };
+    setConstraints(updatedConstraints);
+    fetchRecommendations(updatedConstraints);
+  };
+
+  // Location update handler
+  const handleLocationChange = (lat: number, lon: number, name?: string) => {
+    setLocation({
+      lat,
+      lon,
+      region_name: name || `Field (${lat.toFixed(2)}, ${lon.toFixed(2)})`
+    });
   };
 
   // Run on mount or when location changes
@@ -138,7 +141,7 @@ export const App: React.FC = () => {
         t={t}
         currentLang={currentLang}
         onLanguageChange={handleLanguageChange}
-        dataSource={climate?.data_source || "SMAP & POWER Live"}
+        dataSource={climate?.data_source || t.liveSatApi}
         onOpenSms={() => setIsSmsOpen(true)}
         onPrint={handlePrint}
       />
@@ -151,17 +154,19 @@ export const App: React.FC = () => {
             <div className="flex items-center gap-2.5">
               <Flame className="w-4 h-4 text-amber-600 shrink-0" />
               <span>
-                <strong>Simulated Climate Stress Active:</strong> Recalibrated for {stressScenario.rainfall_delta_pct}% rainfall anomaly and +{stressScenario.temp_delta_c}°C heat offset.
+                {t.simulatedStressAlert
+                  .replace('{pct}', String(stressScenario.rainfall_delta_pct))
+                  .replace('{temp}', String(stressScenario.temp_delta_c))}
               </span>
             </div>
             <button
               onClick={() => {
                 setStressScenario({ rainfall_delta_pct: 0, temp_delta_c: 0 });
-                setTimeout(fetchRecommendations, 50);
+                setTimeout(() => fetchRecommendations(), 50);
               }}
               className="px-2.5 py-1 bg-white hover:bg-amber-100/50 rounded-md text-amber-800 border border-amber-200 text-xs font-medium transition cursor-pointer"
             >
-              Reset Baseline
+              {t.resetBaseline}
             </button>
           </div>
         )}
@@ -172,7 +177,7 @@ export const App: React.FC = () => {
             {/* Metric 1: Annual Precipitation */}
             <div className="bg-white p-4 rounded-xl border border-zinc-200 shadow-xs flex flex-col justify-between">
               <div className="flex items-center justify-between text-zinc-500">
-                <span className="text-xs font-medium">Annual Precipitation</span>
+                <span className="text-xs font-medium">{t.annualPrecip}</span>
                 <CloudRain className="w-4 h-4 text-zinc-400" />
               </div>
               <div className="mt-2">
@@ -186,15 +191,14 @@ export const App: React.FC = () => {
                   {climate.rainfall_5yr_trend_pct < 0 ? (
                     <span className="text-amber-700 font-medium flex items-center gap-0.5">
                       <TrendingDown className="w-3.5 h-3.5" />
-                      {climate.rainfall_5yr_trend_pct}% anomaly
+                      {climate.rainfall_5yr_trend_pct}% {t.anomalyVsAvg}
                     </span>
                   ) : (
                     <span className="text-emerald-700 font-medium flex items-center gap-0.5">
                       <TrendingUp className="w-3.5 h-3.5" />
-                      +{climate.rainfall_5yr_trend_pct}% anomaly
+                      +{climate.rainfall_5yr_trend_pct}% {t.anomalyVsAvg}
                     </span>
                   )}
-                  <span className="text-zinc-400">vs 5-yr avg</span>
                 </div>
               </div>
             </div>
@@ -202,7 +206,7 @@ export const App: React.FC = () => {
             {/* Metric 2: Heat Stress Days */}
             <div className="bg-white p-4 rounded-xl border border-zinc-200 shadow-xs flex flex-col justify-between">
               <div className="flex items-center justify-between text-zinc-500">
-                <span className="text-xs font-medium">Heat Stress Days (&gt;35°C)</span>
+                <span className="text-xs font-medium">{t.heatStressDays}</span>
                 <Flame className="w-4 h-4 text-amber-500" />
               </div>
               <div className="mt-2">
@@ -210,7 +214,7 @@ export const App: React.FC = () => {
                   <span className="text-2xl font-bold tracking-tight text-zinc-900">
                     {climate.heat_days_above_35c}
                   </span>
-                  <span className="text-xs text-zinc-500 font-medium">Days</span>
+                  <span className="text-xs text-zinc-500 font-medium">{t.days}</span>
                 </div>
                 <div className="mt-1.5 flex items-center justify-between text-xs text-zinc-500">
                   <span className="font-medium text-zinc-700">Avg: {climate.avg_temperature_c}°C</span>
@@ -222,7 +226,7 @@ export const App: React.FC = () => {
             {/* Metric 3: Root-Zone Moisture */}
             <div className="bg-white p-4 rounded-xl border border-zinc-200 shadow-xs flex flex-col justify-between">
               <div className="flex items-center justify-between text-zinc-500">
-                <span className="text-xs font-medium">Root-Zone Moisture</span>
+                <span className="text-xs font-medium">{t.rootZoneMoisture}</span>
                 <Droplet className="w-4 h-4 text-emerald-600" />
               </div>
               <div className="mt-2">
@@ -230,11 +234,11 @@ export const App: React.FC = () => {
                   <span className="text-2xl font-bold tracking-tight text-zinc-900">
                     {Math.round(climate.root_zone_soil_wetness * 100)}%
                   </span>
-                  <span className="text-xs text-zinc-500 font-medium">Volumetric</span>
+                  <span className="text-xs text-zinc-500 font-medium">{t.volumetric}</span>
                 </div>
                 <div className="mt-1.5 flex items-center gap-1.5 text-xs text-emerald-700 font-medium">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                  <span>SMAP L4 Active</span>
+                  <span>{t.smapActive}</span>
                 </div>
               </div>
             </div>
@@ -242,7 +246,7 @@ export const App: React.FC = () => {
             {/* Metric 4: Soil Chemistry & Texture */}
             <div className="bg-white p-4 rounded-xl border border-zinc-200 shadow-xs flex flex-col justify-between">
               <div className="flex items-center justify-between text-zinc-500">
-                <span className="text-xs font-medium">Soil Chemistry &amp; Horizon</span>
+                <span className="text-xs font-medium">{t.soilChemistry}</span>
                 <Layers className="w-4 h-4 text-zinc-400" />
               </div>
               <div className="mt-2">
@@ -296,14 +300,14 @@ export const App: React.FC = () => {
             <ClimateShockSlider
               scenario={stressScenario}
               onChange={setStressScenario}
-              onApply={fetchRecommendations}
+              onApply={() => fetchRecommendations()}
               isLoading={isLoading}
               t={t}
             />
 
             {/* 5. Primary Calculate Action Button */}
             <button
-              onClick={fetchRecommendations}
+              onClick={() => fetchRecommendations()}
               disabled={isLoading}
               className="w-full py-3 px-4 bg-zinc-900 hover:bg-zinc-800 text-white rounded-xl font-medium text-sm shadow-sm transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-[0.99] disabled:opacity-60"
             >
@@ -331,14 +335,16 @@ export const App: React.FC = () => {
                 <div>
                   <div className="flex items-center gap-2">
                     <h2 className="text-base sm:text-lg font-semibold text-zinc-900">
-                      Verified Climate-Smart Rotations
+                      {t.verifiedRotations}
                     </h2>
                     <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-200/60">
-                      {resultData.recommendations.length} Sequences
+                      {resultData.recommendations.length} {t.sequencesCount}
                     </span>
                   </div>
                   <p className="text-xs text-zinc-500 mt-0.5">
-                    Evaluated in {resultData.generation_time_ms} ms • Optimized for {climate?.soil_info.classification}
+                    {t.evaluatedIn
+                      .replace('{ms}', String(resultData.generation_time_ms))
+                      .replace('{soil}', climate?.soil_info.classification || '')}
                   </p>
                 </div>
 
@@ -348,7 +354,7 @@ export const App: React.FC = () => {
                     className="px-3 py-1.5 rounded-md bg-white text-zinc-700 border border-zinc-200 hover:bg-zinc-50 text-xs font-medium flex items-center gap-1.5 transition cursor-pointer shadow-xs"
                   >
                     <MessageSquare className="w-3.5 h-3.5 text-emerald-600" />
-                    <span>WhatsApp / SMS</span>
+                    <span>{t.whatsappSms}</span>
                   </button>
 
                   <button
@@ -356,7 +362,7 @@ export const App: React.FC = () => {
                     className="px-3 py-1.5 rounded-md bg-white text-zinc-700 border border-zinc-200 hover:bg-zinc-50 text-xs font-medium flex items-center gap-1.5 transition cursor-pointer shadow-xs"
                   >
                     <Printer className="w-3.5 h-3.5 text-zinc-600" />
-                    <span>Print Sheet</span>
+                    <span>{t.printSheet}</span>
                   </button>
                 </div>
               </div>
@@ -367,7 +373,7 @@ export const App: React.FC = () => {
               <div className="p-4 rounded-xl bg-red-50 border border-red-200 text-red-800 text-xs flex items-start gap-3">
                 <AlertCircle className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />
                 <div>
-                  <div className="font-semibold">Advisory Engine Notice</div>
+                  <div className="font-semibold">{t.engineNotice}</div>
                   <div className="mt-0.5">{error}</div>
                 </div>
               </div>
@@ -389,14 +395,14 @@ export const App: React.FC = () => {
             ) : (
               <div className="bg-white rounded-xl p-12 text-center border border-zinc-200 text-zinc-500 space-y-3">
                 <Satellite className="w-8 h-8 mx-auto text-emerald-600 animate-pulse" />
-                <p className="text-xs font-medium">Ingesting NASA Earth Observations...</p>
+                <p className="text-xs font-medium">{t.ingestingNasa}</p>
               </div>
             )}
 
             {/* Data Provenance Footer Strip */}
             <div className="p-3 bg-zinc-100/70 rounded-lg border border-zinc-200/60 flex flex-col sm:flex-row items-center justify-between text-xs text-zinc-500 gap-1.5">
-              <span>NASA Goddard Institute &amp; SMAP Mission Telemetry v4.2</span>
-              <span>WGS84 Lat/Lon Coordinates · ISO 8601</span>
+              <span>{t.dataProvenance}</span>
+              <span>{t.coordsStandard}</span>
             </div>
           </div>
         </div>
@@ -409,6 +415,7 @@ export const App: React.FC = () => {
           onClose={() => setIsSmsOpen(false)}
           smsText={resultData.sms_format}
           whatsappText={resultData.whatsapp_format}
+          t={t}
         />
       )}
 
