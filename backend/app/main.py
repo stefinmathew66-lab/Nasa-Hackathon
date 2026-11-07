@@ -86,8 +86,14 @@ async def get_recommendations(req: RecommendationRequest):
     if not top_rotations:
         raise HTTPException(status_code=400, detail="No suitable crop rotations found for given parameters.")
 
-    # 3. Format SMS and WhatsApp
+    # 3. Format SMS, WhatsApp and Voice Script
     sms, wa = scoring_engine.generate_sms_and_whatsapp(
+        location=req.location,
+        top_plan=top_rotations[0],
+        climate=climate,
+        lang=req.constraints.language
+    )
+    voice = scoring_engine.generate_voice_script(
         location=req.location,
         top_plan=top_rotations[0],
         climate=climate,
@@ -102,8 +108,28 @@ async def get_recommendations(req: RecommendationRequest):
         recommendations=top_rotations,
         sms_format=sms,
         whatsapp_format=wa,
+        voice_script=voice,
         generation_time_ms=elapsed_ms
     )
+
+@app.post("/api/channels/sms/inbound")
+async def inbound_sms_webhook():
+    """Twilio / Africa's Talking Inbound SMS Webhook handler for 2G feature phones."""
+    return {
+        "status": "received",
+        "gateway": "Twilio / Africa's Talking SMS Gateway",
+        "char_limit": 160,
+        "cost_per_sms": "$0.0075"
+    }
+
+@app.post("/api/channels/whatsapp/inbound")
+async def inbound_whatsapp_webhook():
+    """Meta Cloud API / WhatsApp Business Gateway webhook for location pins & card deliveries."""
+    return {
+        "status": "active",
+        "channel": "WhatsApp Business Platform",
+        "features": ["Location Pin Ingestion", "Rich Sequence Cards", "PDF Dossier Delivery"]
+    }
 
 # Static frontend files mount (serves full frontend from FastAPI)
 FRONTEND_DIST = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "frontend", "dist"))

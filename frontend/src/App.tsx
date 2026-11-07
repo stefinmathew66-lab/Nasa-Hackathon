@@ -408,13 +408,15 @@ export const App: React.FC = () => {
         </div>
       </main>
 
-      {/* SMS & WhatsApp Modal */}
+      {/* Multi-Channel Delivery Simulator: SMS, WhatsApp & Voice Call */}
       {resultData && (
         <SmsSimulatorModal
           isOpen={isSmsOpen}
           onClose={() => setIsSmsOpen(false)}
           smsText={resultData.sms_format}
           whatsappText={resultData.whatsapp_format}
+          voiceScript={resultData.voice_script}
+          currentLang={currentLang}
           t={t}
         />
       )}

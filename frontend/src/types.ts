@@ -92,6 +92,7 @@ export interface RecommendationResponse {
   recommendations: RotationPlan[];
   sms_format: string;
   whatsapp_format: string;
+  voice_script?: string;
   generation_time_ms: number;
 }
 

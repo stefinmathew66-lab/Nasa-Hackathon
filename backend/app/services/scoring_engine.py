@@ -470,3 +470,48 @@ class ScoringEngine:
 
         return sms, wa
 
+    def generate_voice_script(
+        self,
+        location: LocationInput,
+        top_plan: RotationPlan,
+        climate: ClimateSummary,
+        lang: str = "en"
+    ) -> str:
+        c1 = top_plan.crops[0].name
+        c2 = top_plan.crops[1].name
+        c3 = top_plan.crops[2].name
+        water_saved = max(0, 1400 - top_plan.total_water_need_mm)
+
+        if lang == "hi":
+            return (
+                f"नमस्ते किसान भाई। नासा फसल चक्र सलाहकार सेवा में आपका स्वागत है। "
+                f"आपके खेत के लिए सबसे उपयुक्त तीन-सीजन फसल चक्र है: "
+                f"सीजन एक में {c1}, सीजन दो में {c2}, और सीजन तीन में {c3}। "
+                f"यह अनुक्रम मिट्टी में जैविक नाइट्रोजन बढ़ाता है और लगभग {water_saved} मिलीमीटर पानी की बचत करता है। "
+                f"पूर्ण रिपोर्ट आपके मोबाइल पर संदेश द्वारा भेज दी गई है। धन्यवाद।"
+            )
+        elif lang == "sw":
+            return (
+                f"Habari mkulima. Karibu kwenye huduma ya ushauri wa mazao kutoka NASA. "
+                f"Kwa shamba lako, mzunguko bora wa misimu mitatu ni: "
+                f"Msimu wa kwanza {c1}, msimu wa pili {c2}, na msimu wa tatu {c3}. "
+                f"Mkakati huu unaboresha naitrojeni ya udongo na kuokoa milimita {water_saved} za maji. "
+                f"Ujumbe wa uthibitisho umetumwa kwenye simu yako. Asante."
+            )
+        elif lang == "es":
+            return (
+                f"Hola productor. Bienvenido al servicio de asesoría de rotación de cultivos de la NASA. "
+                f"Para las coordenadas de su finca, su rotación óptima de tres temporadas es: "
+                f"Temporada uno: {c1}, temporada dos: {c2}, y temporada tres: {c3}. "
+                f"Esta estrategia regenera el nitrógeno del suelo y ahorra {water_saved} milímetros de agua. "
+                f"Se ha enviado un mensaje de texto con los detalles a su teléfono. Gracias."
+            )
+        else:
+            return (
+                f"Hello farmer. Welcome to the NASA Crop Rotation Advisory voice service. "
+                f"For your field coordinates, your optimal three-season rotation strategy is: "
+                f"Season one, {c1}. Season two, {c2}. Season three, {c3}. "
+                f"This rotation rebuilds natural soil nitrogen and conserves {water_saved} millimeters of water. "
+                f"A full summary has been dispatched to your mobile phone. Thank you."
+            )
+

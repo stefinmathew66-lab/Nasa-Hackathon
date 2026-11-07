@@ -100,6 +100,11 @@ export interface Translations {
   cheapestDeviceFirst: string;
   basicSms: string;
   whatsAppCard: string;
+  voiceCall: string;
+  playVoiceAdvisory: string;
+  stopVoiceAdvisory: string;
+  incomingCall: string;
+  spokenTextLabel: string;
   copyText: string;
   copied: string;
 }
@@ -196,10 +201,15 @@ export const translations: Record<string, Translations> = {
     nitrogenBalance: "Estimated Biological Nitrogen Balance",
     climateRiskNotice: "Climate Risk Notice",
 
-    lowTechTitle: "Low-Tech Channel Simulation",
-    cheapestDeviceFirst: "Design Principle: Cheapest Device First",
+    lowTechTitle: "Multi-Channel Delivery Simulator",
+    cheapestDeviceFirst: "Design Principle: Reaching 100% of Smallholders via SMS, WhatsApp & Voice",
     basicSms: "Basic Phone SMS (160 Chars)",
     whatsAppCard: "WhatsApp Card",
+    voiceCall: "Automated Voice Call (IVR)",
+    playVoiceAdvisory: "Listen to Spoken Call",
+    stopVoiceAdvisory: "End Call",
+    incomingCall: "Toll-Free Farmer Hotline",
+    spokenTextLabel: "Spoken Speech Script",
     copyText: "Copy",
     copied: "Copied!"
   },
@@ -294,10 +304,15 @@ export const translations: Record<string, Translations> = {
     nitrogenBalance: "अनुमानित जैविक नाइट्रोजन संतुलन",
     climateRiskNotice: "मौसम जोखिम चेतावनी",
 
-    lowTechTitle: "सरल फोन चैनल सिमुलेशन",
-    cheapestDeviceFirst: "डिजाइन सिद्धांत: सबसे सरल उपकरण पहले",
-    basicSms: "सामान्य फोन एसएमएस (160 अक्षर)",
+    lowTechTitle: "मल्टी-चैनल डिलीवरी सिमुलेटर",
+    cheapestDeviceFirst: "डिजाइन सिद्धांत: एसएमएस, व्हाट्सएप व वॉयस कॉल द्वारा 100% किसानों तक पहुंच",
+    basicSms: "फोन एसएमएस (160 अक्षर)",
     whatsAppCard: "व्हाट्सएप कार्ड",
+    voiceCall: "ऑटोमेटेड वॉयस कॉल (IVR)",
+    playVoiceAdvisory: "फोन कॉल सुनें",
+    stopVoiceAdvisory: "कॉल समाप्त करें",
+    incomingCall: "टोल-फ्री किसान हेल्पलाइन कॉल",
+    spokenTextLabel: "बोली जाने वाली स्क्रिप्ट",
     copyText: "कॉपी करें",
     copied: "कॉपी हो गया!"
   },
@@ -392,10 +407,15 @@ export const translations: Record<string, Translations> = {
     nitrogenBalance: "Kadirio la Naitrojeni ya Asili",
     climateRiskNotice: "Tahadhari ya Hatari ya Hewa",
 
-    lowTechTitle: "Uigaji wa Mawasiliano Rahisi",
-    cheapestDeviceFirst: "Kanuni ya Muundo: Kifaa Rahisi Zaidi Kwanza",
+    lowTechTitle: "Uigaji wa Njia Mbalimbali za Utoaji",
+    cheapestDeviceFirst: "Kanuni ya Muundo: Kuwafikia 100% ya Wakulima kupitia SMS, WhatsApp na Sauti",
     basicSms: "SMS ya Simu ya Kawaida (Herufi 160)",
     whatsAppCard: "Kadi ya WhatsApp",
+    voiceCall: "Simu ya Sauti ya Kiotomatiki (IVR)",
+    playVoiceAdvisory: "Sikiliza Simu ya Sauti",
+    stopVoiceAdvisory: "Kata Simu",
+    incomingCall: "Simu ya Bure ya Mkulima",
+    spokenTextLabel: "Maneno Yanayosemwa kwa Sauti",
     copyText: "Nakili",
     copied: "Imenakiliwa!"
   },
@@ -490,10 +510,15 @@ export const translations: Record<string, Translations> = {
     nitrogenBalance: "Balance Estimado de Nitrógeno Biológico",
     climateRiskNotice: "Aviso de Riesgo Climático",
 
-    lowTechTitle: "Simulación de Canal de Baja Tecnología",
-    cheapestDeviceFirst: "Principio de Diseño: El Dispositivo Más Accesible Primero",
+    lowTechTitle: "Simulador de Entrega Multicanal",
+    cheapestDeviceFirst: "Principio de Diseño: Llegar al 100% de Pequeños Agricultores vía SMS, WhatsApp y Voz",
     basicSms: "SMS de Teléfono Básico (160 Caracteres)",
     whatsAppCard: "Tarjeta de WhatsApp",
+    voiceCall: "Llamada de Voz Automatizada (IVR)",
+    playVoiceAdvisory: "Escuchar Llamada de Voz",
+    stopVoiceAdvisory: "Finalizar Llamada",
+    incomingCall: "Línea Gratuita al Productor",
+    spokenTextLabel: "Guión de Audio Hablado",
     copyText: "Copiar",
     copied: "¡Copiado!"
   }

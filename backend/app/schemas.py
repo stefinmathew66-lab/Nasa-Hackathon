@@ -92,5 +92,6 @@ class RecommendationResponse(BaseModel):
     recommendations: List[RotationPlan]
     sms_format: str
     whatsapp_format: str
+    voice_script: Optional[str] = None
     generation_time_ms: float
 
