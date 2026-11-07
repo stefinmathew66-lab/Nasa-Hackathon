@@ -76,20 +76,20 @@ class NasaClimateService:
                     gwet = props.get("GWETROOT", {})
 
                     if precip:
-                        valid_precip = [v for v in precip.values() if v >= 0]
+                        valid_precip = [v for v in precip.values() if isinstance(v, (int, float)) and v >= 0 and v != -999.0]
                         if valid_precip:
                             annual_rain = round(sum(valid_precip), 1)
                             monsoon_rain = round(annual_rain * 0.75, 1)
                             dry_rain = round(annual_rain * 0.25, 1)
 
                     if t_max:
-                        valid_tmax = [v for v in t_max.values() if v > -50]
+                        valid_tmax = [v for v in t_max.values() if isinstance(v, (int, float)) and v > -60.0 and v != -999.0]
                         if valid_tmax:
                             heat_days = sum(1 for v in valid_tmax if v >= 35.0)
                             avg_temp = round(sum(valid_tmax) / len(valid_tmax), 1)
 
                     if gwet:
-                        valid_gwet = [v for v in gwet.values() if v >= 0]
+                        valid_gwet = [v for v in gwet.values() if isinstance(v, (int, float)) and v >= 0 and v != -999.0]
                         if valid_gwet:
                             soil_wetness = round(sum(valid_gwet) / len(valid_gwet), 2)
 

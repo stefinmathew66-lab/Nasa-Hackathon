@@ -73,7 +73,14 @@ class ScoringEngine:
                     if has_restorative:
                         candidates.append((c1, c2, c3))
 
-        # Return a diverse sample of candidates
+        if not candidates and len(self.crops) >= 3:
+            default_trio = [
+                (self.crop_map.get("sorghum", self.crops[0]), self.crop_map.get("chickpea", self.crops[1]), self.crop_map.get("sesame", self.crops[2])),
+                (self.crop_map.get("pearl_millet", self.crops[0]), self.crop_map.get("cowpea", self.crops[1]), self.crop_map.get("sunflower", self.crops[2])),
+                (self.crop_map.get("maize", self.crops[0]), self.crop_map.get("soybean", self.crops[1]), self.crop_map.get("wheat", self.crops[2]))
+            ]
+            candidates.extend(default_trio)
+
         return candidates
 
     def score_rotation(

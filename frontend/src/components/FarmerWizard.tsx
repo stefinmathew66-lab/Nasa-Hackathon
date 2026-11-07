@@ -116,7 +116,7 @@ export const FarmerWizard: React.FC<FarmerWizardProps> = ({
               max="500"
               step="0.5"
               value={constraints.field_size_ha}
-              onChange={(e) => updateField('field_size_ha', parseFloat(e.target.value) || 1.0)}
+              onChange={(e) => updateField('field_size_ha', Math.max(0.1, parseFloat(e.target.value) || 0.1))}
               className="w-16 bg-transparent text-lg font-headline font-bold text-primary focus:outline-none"
             />
             <span className="text-xs font-mono text-on-surface">Hectares</span>

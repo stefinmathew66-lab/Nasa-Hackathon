@@ -207,7 +207,7 @@ export const App: React.FC = () => {
               className="w-full py-3.5 px-4 bg-secondary text-white rounded-lg font-headline text-base font-bold shadow-md hover:bg-secondary-on-container transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-98 disabled:opacity-60"
             >
               <Sparkles className="w-5 h-5 text-secondary-fixed" />
-              <span>{isLoading ? "Consulting NASA Earth Observations..." : "Generate Resilient 3-Season Rotations (AI + NASA EO)"}</span>
+              <span>{isLoading ? t.calculating : t.calculateButton}</span>
             </button>
           </div>
 

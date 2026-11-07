@@ -34,14 +34,13 @@ export const MapPicker: React.FC<MapPickerProps> = ({
     if (!mapContainerRef.current) return;
 
     if (!mapInstanceRef.current) {
-      const customIcon = L.icon({
-        iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
-        iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
-        shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
-        iconSize: [25, 41],
-        iconAnchor: [12, 41],
-        popupAnchor: [1, -34],
-        shadowSize: [41, 41]
+      // 100% self-contained offline SVG pin icon
+      const customIcon = L.divIcon({
+        className: 'custom-pin',
+        html: `<div style="background-color: #ba1a1a; width: 26px; height: 26px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); border: 2.5px solid white; box-shadow: 0 3px 8px rgba(0,0,0,0.35); display: flex; align-items: center; justify-content: center;"><div style="width: 8px; height: 8px; background: white; border-radius: 50%;"></div></div>`,
+        iconSize: [26, 26],
+        iconAnchor: [13, 26],
+        popupAnchor: [0, -26]
       });
 
       const map = L.map(mapContainerRef.current, {
@@ -72,6 +71,11 @@ export const MapPicker: React.FC<MapPickerProps> = ({
         onLocationChange(e.latlng.lat, e.latlng.lng, `Custom Field (${e.latlng.lat.toFixed(2)}, ${e.latlng.lng.toFixed(2)})`);
       });
 
+      // Invalidate size to ensure crisp full-width render without gray tiles
+      setTimeout(() => {
+        map.invalidateSize();
+      }, 200);
+
       mapInstanceRef.current = map;
       markerRef.current = marker;
     } else {
@@ -81,6 +85,14 @@ export const MapPicker: React.FC<MapPickerProps> = ({
         markerRef.current.bindPopup(`<b>${regionName || 'Target Parcel'}</b><br/>${lat.toFixed(4)}°N, ${lon.toFixed(4)}°E`).openPopup();
       }
     }
+
+    return () => {
+      if (mapInstanceRef.current) {
+        mapInstanceRef.current.remove();
+        mapInstanceRef.current = null;
+        markerRef.current = null;
+      }
+    };
   }, [lat, lon, regionName]);
 
   const handleUseCurrentLocation = () => {

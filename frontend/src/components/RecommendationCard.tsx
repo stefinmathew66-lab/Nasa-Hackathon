@@ -31,7 +31,8 @@ export const RecommendationCard: React.FC<RecommendationCardProps> = ({
   const [showLedger, setShowLedger] = useState(false);
 
   // SVG circular gauge calculation
-  const strokeDash = `${Math.round(plan.overall_score)}, 100`;
+  const clampedScore = Math.max(0, Math.min(100, Math.round(plan.overall_score)));
+  const strokeDash = `${clampedScore}, 100`;
 
   // Water savings estimate vs traditional monoculture (e.g. cotton or hybrid corn ~1400mm)
   const waterSaved = Math.max(0, 1400 - plan.total_water_need_mm);

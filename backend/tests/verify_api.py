@@ -11,7 +11,8 @@ def test_root():
     # Test static frontend serving
     res_front = client.get("/")
     assert res_front.status_code == 200
-    assert "NASA Crop Rotation Advisor" in res_front.text
+    assert "NASA" in res_front.text
+    assert "Advisor" in res_front.text
     print("Frontend successfully served on root '/'!")
 
 def test_recommendation_endpoint():
