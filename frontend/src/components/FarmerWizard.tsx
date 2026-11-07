@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layers, Droplet, Sprout, DollarSign, Ruler, History, Sparkles } from 'lucide-react';
+import { Layers, Droplet } from 'lucide-react';
 import { FarmerConstraints } from '../types';
 import { Translations } from '../locales/translations';
 
@@ -22,31 +22,31 @@ export const FarmerWizard: React.FC<FarmerWizardProps> = ({
   };
 
   return (
-    <div className="bg-surface-container-lowest rounded-lg border border-outline-variant p-4 space-y-4 shadow-sm">
-      {/* Header */}
-      <div className="flex items-center justify-between border-b border-outline-variant pb-2.5">
+    <div className="bg-white rounded-xl border border-zinc-200 p-5 shadow-xs flex flex-col gap-4">
+      {/* Title */}
+      <div className="flex items-center justify-between pb-1 border-b border-zinc-100">
         <div className="flex items-center gap-2">
-          <Layers className="w-5 h-5 text-secondary" />
-          <h3 className="font-headline font-bold text-base text-primary">
-            Farm Soil &amp; Hydrological Baseline
-          </h3>
+          <Layers className="w-4 h-4 text-emerald-600" />
+          <h2 className="text-sm font-semibold text-zinc-900">
+            Soil &amp; Water Profile
+          </h2>
         </div>
-        <span className="text-[10px] font-mono text-secondary bg-secondary-container/40 px-2 py-0.5 rounded font-semibold border border-secondary/50 uppercase">
-          In-situ Calibrated
+        <span className="text-xs text-zinc-400 font-normal">
+          Field Parameters
         </span>
       </div>
 
-      {/* Soil Texture Classification */}
-      <div>
-        <span className="text-[11px] font-mono text-on-surface-variant font-medium block mb-2 uppercase">
-          SOIL TEXTURE CLASSIFICATION:
-        </span>
+      {/* Soil Texture Selection */}
+      <div className="flex flex-col gap-1.5">
+        <label className="text-xs font-medium text-zinc-500">
+          Soil Texture Horizon
+        </label>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
           {[
-            { id: 'clay', label: 'Clay Vertisol', sub: 'High Retain' },
-            { id: 'loam', label: 'Silty Loam', sub: 'Balanced' },
-            { id: 'sandy', label: 'Sandy Aridisol', sub: 'Rapid Drain' },
-            { id: 'auto', label: 'Auto-Detect', sub: 'NASA SMAP' },
+            { id: 'clay', label: 'Vertisol (Clay)' },
+            { id: 'loam', label: 'Silty Loam' },
+            { id: 'sandy', label: 'Sandy Aridisol' },
+            { id: 'auto', label: 'Auto (SMAP)' },
           ].map((s) => {
             const isSelected = constraints.soil_type === s.id;
             return (
@@ -54,31 +54,28 @@ export const FarmerWizard: React.FC<FarmerWizardProps> = ({
                 key={s.id}
                 type="button"
                 onClick={() => updateField('soil_type', s.id)}
-                className={`px-2 py-2.5 rounded border text-center transition flex flex-col items-center justify-center ${
+                className={`py-2 px-2.5 rounded-lg border text-xs font-medium transition text-center cursor-pointer ${
                   isSelected
-                    ? 'bg-primary text-white border-primary font-bold shadow-sm'
-                    : 'bg-surface-container-low text-on-surface border-outline-variant hover:bg-surface-container'
+                    ? 'border-zinc-900 bg-zinc-900 text-white shadow-xs'
+                    : 'border-zinc-200 bg-white text-zinc-700 hover:bg-zinc-50'
                 }`}
               >
-                <span className="text-xs font-mono font-bold leading-tight">{s.label}</span>
-                <span className={`text-[9px] font-mono mt-0.5 ${isSelected ? 'text-secondary-fixed' : 'text-outline'}`}>
-                  {s.sub}
-                </span>
+                {s.label}
               </button>
             );
           })}
         </div>
       </div>
 
-      {/* Water Access & Irrigation Capacity */}
-      <div>
-        <span className="text-[11px] font-mono text-on-surface-variant font-medium block mb-2 uppercase">
-          WATER ACCESS &amp; IRRIGATION CAPACITY:
-        </span>
+      {/* Water Access Selection */}
+      <div className="flex flex-col gap-1.5">
+        <label className="text-xs font-medium text-zinc-500">
+          Irrigation Capacity
+        </label>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
           {[
-            { id: 'rainfed', label: 'Rainfed (Monsoon)' },
-            { id: 'borewell', label: 'Borewell / Ground' },
+            { id: 'rainfed', label: 'Rainfed' },
+            { id: 'borewell', label: 'Borewell' },
             { id: 'canal', label: 'Canal Network' },
             { id: 'drip', label: 'Precision Drip' },
           ].map((w) => {
@@ -88,28 +85,26 @@ export const FarmerWizard: React.FC<FarmerWizardProps> = ({
                 key={w.id}
                 type="button"
                 onClick={() => updateField('water_access', w.id)}
-                className={`px-2 py-2 rounded text-xs font-mono transition flex items-center justify-center gap-1.5 border ${
+                className={`py-2 px-2.5 rounded-lg border text-xs font-medium transition text-center cursor-pointer flex items-center justify-center gap-1.5 ${
                   isSelected
-                    ? 'bg-secondary text-white border-secondary font-bold shadow-sm'
-                    : 'bg-surface-container-low text-on-surface border-outline-variant hover:bg-surface-container'
+                    ? 'border-emerald-700 bg-emerald-700 text-white shadow-xs'
+                    : 'border-zinc-200 bg-white text-zinc-700 hover:bg-zinc-50'
                 }`}
               >
-                <Droplet className={`w-3.5 h-3.5 ${isSelected ? 'text-white' : 'text-secondary'}`} />
-                <span className="truncate">{w.label}</span>
+                <Droplet className={`w-3.5 h-3.5 ${isSelected ? 'text-white' : 'text-emerald-600'}`} />
+                <span>{w.label}</span>
               </button>
             );
           })}
         </div>
       </div>
 
-      {/* Numerical Inputs Row */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
+      {/* Key Parcel Constraints Row */}
+      <div className="grid grid-cols-3 gap-3 pt-2 border-t border-zinc-100">
         {/* Field Size */}
-        <div className="bg-surface-container-low p-2.5 rounded border border-outline-variant">
-          <label className="text-[10px] font-mono text-on-surface-variant uppercase block font-semibold">
-            FIELD SIZE
-          </label>
-          <div className="flex items-baseline gap-1 mt-1">
+        <div className="flex flex-col gap-1">
+          <span className="text-xs text-zinc-500 font-medium">Field Size</span>
+          <div className="flex items-baseline gap-1">
             <input
               type="number"
               min="0.1"
@@ -117,49 +112,45 @@ export const FarmerWizard: React.FC<FarmerWizardProps> = ({
               step="0.5"
               value={constraints.field_size_ha}
               onChange={(e) => updateField('field_size_ha', Math.max(0.1, parseFloat(e.target.value) || 0.1))}
-              className="w-16 bg-transparent text-lg font-headline font-bold text-primary focus:outline-none"
+              className="w-14 bg-zinc-50 border border-zinc-200 rounded px-2 py-1 text-sm font-semibold text-zinc-900 focus:outline-none focus:border-zinc-400"
             />
-            <span className="text-xs font-mono text-on-surface">Hectares</span>
+            <span className="text-xs text-zinc-500 font-normal">Ha</span>
           </div>
         </div>
 
-        {/* Previous Crop */}
-        <div className="bg-surface-container-low p-2.5 rounded border border-outline-variant">
-          <label className="text-[10px] font-mono text-on-surface-variant uppercase block font-semibold">
-            PREVIOUS CROP
-          </label>
+        {/* Prior Crop */}
+        <div className="flex flex-col gap-1">
+          <span className="text-xs text-zinc-500 font-medium">Prior Crop</span>
           <select
             value={constraints.previous_crop_id || ''}
             onChange={(e) => updateField('previous_crop_id', e.target.value || undefined)}
-            className="w-full bg-transparent text-xs font-mono font-bold text-on-surface focus:outline-none cursor-pointer mt-1"
+            className="w-full bg-zinc-50 border border-zinc-200 rounded px-2 py-1 text-xs font-medium text-zinc-900 focus:outline-none focus:border-zinc-400 cursor-pointer"
           >
-            <option value="">None / Fallow</option>
-            <option value="cotton">Cotton (Heavy Depletion)</option>
-            <option value="maize">Maize (Poaceae Exhaustion)</option>
-            <option value="wheat">Wheat (Nitrogen Depleting)</option>
-            <option value="chickpea">Chickpea (Legume Residual)</option>
-            <option value="soybean">Soybean (Partial Residual)</option>
+            <option value="">Fallow / None</option>
+            <option value="cotton">Cotton</option>
+            <option value="maize">Maize</option>
+            <option value="wheat">Wheat</option>
+            <option value="chickpea">Chickpea</option>
+            <option value="soybean">Soybean</option>
           </select>
         </div>
 
-        {/* Budget Level */}
-        <div className="bg-surface-container-low p-2.5 rounded border border-outline-variant">
-          <label className="text-[10px] font-mono text-on-surface-variant uppercase block font-semibold">
-            INPUT BUDGET
-          </label>
-          <div className="flex items-center gap-1 mt-1">
+        {/* Budget */}
+        <div className="flex flex-col gap-1">
+          <span className="text-xs text-zinc-500 font-medium">Budget Tier</span>
+          <div className="flex items-center gap-1">
             {['low', 'medium', 'high'].map((lvl) => (
               <button
                 key={lvl}
                 type="button"
                 onClick={() => updateField('budget_level', lvl)}
-                className={`text-[10px] font-mono uppercase px-2 py-1 rounded transition ${
+                className={`flex-1 text-[11px] font-medium uppercase py-1 rounded transition ${
                   constraints.budget_level === lvl
-                    ? 'bg-primary text-white font-bold'
-                    : 'bg-white text-on-surface border border-outline-variant hover:bg-surface-container'
+                    ? 'bg-zinc-900 text-white'
+                    : 'bg-zinc-100 text-zinc-600 hover:bg-zinc-200/80'
                 }`}
               >
-                {lvl}
+                {lvl === 'medium' ? 'Med' : lvl}
               </button>
             ))}
           </div>

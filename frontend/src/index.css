@@ -2,34 +2,39 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Technical telemetry grid lines styling from Stitch Design System */
-.bg-radar-grid {
-  background-size: 24px 24px;
-  background-image: 
-    linear-gradient(to right, rgba(196, 198, 211, 0.25) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(196, 198, 211, 0.25) 1px, transparent 1px);
+@layer base {
+  body {
+    @apply bg-zinc-50 text-zinc-900 font-sans antialiased;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
 }
 
-/* Custom calibrated slider styling */
+/* Custom sleek slider styling (Vercel style) */
 input[type=range] {
   -webkit-appearance: none;
   background: transparent;
 }
 input[type=range]::-webkit-slider-thumb {
   -webkit-appearance: none;
-  height: 16px;
-  width: 16px;
+  height: 14px;
+  width: 14px;
   border-radius: 9999px;
-  background: #002869;
+  background: #18181b;
   cursor: pointer;
-  margin-top: -6px;
-  box-shadow: 0 0 0 2px #c4e7ff;
+  margin-top: -5px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+  border: 2px solid #ffffff;
+  transition: transform 0.1s ease;
+}
+input[type=range]::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
 }
 input[type=range]::-webkit-slider-runnable-track {
   width: 100%;
   height: 4px;
   cursor: pointer;
-  background: #c4c6d3;
+  background: #e4e4e7;
   border-radius: 2px;
 }
 
